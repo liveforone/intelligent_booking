@@ -1,0 +1,5 @@
+package intelligent_booking.intelligent_booking.exception.exception
+
+import intelligent_booking.intelligent_booking.exception.message.JwtExceptionMessage
+
+class JwtCustomException(val jwtExceptionMessage: JwtExceptionMessage) : RuntimeException(jwtExceptionMessage.message)
