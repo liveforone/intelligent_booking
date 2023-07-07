@@ -45,6 +45,8 @@ class Member private constructor(
         pw = PasswordUtil.encodePassword(newPassword)
     }
 
+    fun isPresident(): Boolean = auth == Role.PRESIDENT
+
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
     }
