@@ -12,21 +12,21 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class MemberAndSecurityControllerAdvice {
 
     @ExceptionHandler(BadCredentialsException::class)
-    fun loginFailHandle(): ResponseEntity<*> {
+    fun loginFailHandle(): ResponseEntity<String> {
         return ResponseEntity
             .status(HttpStatus.BAD_REQUEST)
             .body("로그인에 실패했습니다.")
     }
 
     @ExceptionHandler(MemberException::class)
-    fun memberExceptionHandle(memberException: MemberException): ResponseEntity<*> {
+    fun memberExceptionHandle(memberException: MemberException): ResponseEntity<String> {
         return ResponseEntity
             .status(memberException.memberExceptionMessage.status)
             .body(memberException.message)
     }
 
     @ExceptionHandler(JwtCustomException::class)
-    fun jwtCustomException(jwtCustomException: JwtCustomException): ResponseEntity<*> {
+    fun jwtCustomException(jwtCustomException: JwtCustomException): ResponseEntity<String> {
         return ResponseEntity
             .status(jwtCustomException.jwtExceptionMessage.status)
             .body(jwtCustomException.message)
