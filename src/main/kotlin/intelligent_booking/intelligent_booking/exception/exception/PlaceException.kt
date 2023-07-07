@@ -1,0 +1,5 @@
+package intelligent_booking.intelligent_booking.exception.exception
+
+import intelligent_booking.intelligent_booking.exception.message.PlaceExceptionMessage
+
+class PlaceException(val placeExceptionMessage: PlaceExceptionMessage) : RuntimeException(placeExceptionMessage.message)
