@@ -12,8 +12,7 @@ class MemberServiceValidator @Autowired constructor(
 ) {
 
     fun validateDuplicateEmail(email: String) {
-        if (memberRepository.findIdByEmailNullableForValidate(email) != null) {
-            throw MemberException(MemberExceptionMessage.DUPLICATE_EMAIL)
-        }
+        memberRepository.findIdByEmailNullableForValidate(email)
+            ?: throw MemberException(MemberExceptionMessage.DUPLICATE_EMAIL)
     }
 }

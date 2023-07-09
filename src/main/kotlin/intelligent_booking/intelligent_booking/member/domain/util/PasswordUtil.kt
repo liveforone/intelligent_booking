@@ -7,5 +7,5 @@ object PasswordUtil {
 
     fun encodePassword(password:String): String = passwordEncoder.encode(password)
 
-    fun isMatchPassword(password: String, originalPassword:String): Boolean = passwordEncoder.matches(password, originalPassword)
+    fun isMatchPassword(password: String, originalPassword:String) = passwordEncoder.matches(password, originalPassword)
 }
