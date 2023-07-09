@@ -4,11 +4,12 @@ import intelligent_booking.intelligent_booking.member.repository.MemberRepositor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.*
 
 @Service
 @Transactional(readOnly = true)
 class MemberQueryService @Autowired constructor(
     private val memberRepository: MemberRepository
 ) {
-    fun getOneByIdentity(identifier: String) = memberRepository.findOneDtoByIdentifier(identifier)
+    fun getOneByIdentity(identifier: UUID) = memberRepository.findOneDtoByIdentifier(identifier)
 }

@@ -14,14 +14,14 @@ import java.util.*
 @Entity
 class Member private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @Column(unique = true, nullable = false) val identifier: String,
+    @Column(columnDefinition = MemberConstant.UUID_TYPE, unique = true, nullable = false) val identifier: UUID,
     @Column(nullable = false) var email: String,
     @Column(nullable = false) var pw: String,
     @Convert(converter = RoleConverter::class) @Column(nullable = false) val auth: Role
 ) : UserDetails {
 
     companion object {
-        private fun createIdentifier() = UUID.randomUUID().toString()
+        private fun createIdentifier() = UUID.randomUUID()
 
         private fun isAdmin(email: String) = (email == MemberConstant.ADMIN_EMAIL)
 
@@ -41,7 +41,7 @@ class Member private constructor(
     }
 
     fun updatePw(newPassword: String, oldPassword: String) {
-        if (!PasswordUtil.isMatchPassword(oldPassword, pw)) throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
+        require (PasswordUtil.isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD) }
         pw = PasswordUtil.encodePassword(newPassword)
     }
 
@@ -53,7 +53,7 @@ class Member private constructor(
 
     override fun getPassword() = pw
 
-    override fun getUsername() = identifier
+    override fun getUsername() = identifier.toString()
 
     override fun isAccountNonExpired() = true
 

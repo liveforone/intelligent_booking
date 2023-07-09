@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
 @Transactional
@@ -30,7 +31,7 @@ class MemberCommandService @Autowired constructor(
     private val memberServiceValidator: MemberServiceValidator
 ) {
 
-    fun signupMember(signupRequest: SignupRequest): String {
+    fun signupMember(signupRequest: SignupRequest): UUID {
         return with(signupRequest) {
             memberServiceValidator.validateDuplicateEmail(email!!)
             Member.create(email!!, pw!!, auth = Role.MEMBER)
@@ -38,7 +39,7 @@ class MemberCommandService @Autowired constructor(
         }
     }
 
-    fun signupPresident(signupRequest: SignupRequest): String {
+    fun signupPresident(signupRequest: SignupRequest): UUID {
         return with(signupRequest) {
             memberServiceValidator.validateDuplicateEmail(email!!)
             Member.create(email!!, pw!!, auth = Role.PRESIDENT)
@@ -54,18 +55,18 @@ class MemberCommandService @Autowired constructor(
         return jwtTokenProvider.generateToken(authentication)
     }
 
-    fun updateEmail(updateEmail: UpdateEmail, identifier: String) {
+    fun updateEmail(updateEmail: UpdateEmail, identifier: UUID) {
         memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
         memberRepository.findOneByIdentifier(identifier)
             .also { it.updateEmail(updateEmail.newEmail!!) }
     }
 
-    fun updatePassword(updatePassword: UpdatePassword, identifier: String) {
+    fun updatePassword(updatePassword: UpdatePassword, identifier: UUID) {
         memberRepository.findOneByIdentifier(identifier)
             .also { it.updatePw(updatePassword.newPassword!!, updatePassword.oldPassword!!) }
     }
 
-    fun withdraw(withdrawRequest: WithdrawRequest, identifier: String) {
+    fun withdraw(withdrawRequest: WithdrawRequest, identifier: UUID) {
         memberRepository.findOneByIdentifier(identifier)
             .takeIf { PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also { memberRepository.delete(it) }

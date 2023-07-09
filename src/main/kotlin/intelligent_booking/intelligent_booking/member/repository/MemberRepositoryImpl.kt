@@ -12,6 +12,7 @@ import com.linecorp.kotlinjdsl.spring.data.singleQuery
 import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.UUID
 
 @Repository
 class MemberRepositoryImpl @Autowired constructor(
@@ -39,7 +40,7 @@ class MemberRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneByIdentifier(identifier: String): Member {
+    override fun findOneByIdentifier(identifier: UUID): Member {
         return try {
             queryFactory.singleQuery {
                 select(entity(Member::class))
@@ -51,7 +52,7 @@ class MemberRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneDtoByIdentifier(identifier: String): MemberInfo {
+    override fun findOneDtoByIdentifier(identifier: UUID): MemberInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(
