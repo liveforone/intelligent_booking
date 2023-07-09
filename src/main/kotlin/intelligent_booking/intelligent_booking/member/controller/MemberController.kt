@@ -3,6 +3,7 @@ package intelligent_booking.intelligent_booking.member.controller
 import intelligent_booking.intelligent_booking.jwt.constant.JwtConstant
 import intelligent_booking.intelligent_booking.logger
 import intelligent_booking.intelligent_booking.member.controller.constant.MemberControllerLog
+import intelligent_booking.intelligent_booking.member.controller.constant.MemberParam
 import intelligent_booking.intelligent_booking.member.controller.constant.MemberUrl
 import intelligent_booking.intelligent_booking.member.controller.response.MemberResponse
 import intelligent_booking.intelligent_booking.member.dto.request.LoginRequest
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 
@@ -35,7 +37,7 @@ class MemberController @Autowired constructor(
 
     @GetMapping(MemberUrl.INFO)
     fun memberInfo(principal: Principal): ResponseEntity<*> {
-        val member = memberQueryService.getOneByIdentity(identity = principal.name)
+        val member = memberQueryService.getOneByIdentity(identifier = principal.name)
         return MemberResponse.infoSuccess(member)
     }
 
@@ -85,13 +87,13 @@ class MemberController @Autowired constructor(
 
     @PutMapping(MemberUrl.UPDATE_EMAIL)
     fun updateEmail(
+        @RequestParam(MemberParam.IDENTIFIER) identifier: String,
         @RequestBody @Valid updateEmail: UpdateEmail,
-        bindingResult: BindingResult,
-        principal: Principal
+        bindingResult: BindingResult
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
-        memberCommandService.updateEmail(updateEmail, identity = principal.name)
+        memberCommandService.updateEmail(updateEmail, identifier)
         logger().info(MemberControllerLog.UPDATE_EMAIL_SUCCESS.log)
 
         return MemberResponse.updateEmailSuccess()
@@ -99,13 +101,13 @@ class MemberController @Autowired constructor(
 
     @PutMapping(MemberUrl.UPDATE_PASSWORD)
     fun updatePassword(
+        @RequestParam(MemberParam.IDENTIFIER) identifier: String,
         @RequestBody @Valid updatePassword: UpdatePassword,
-        bindingResult: BindingResult,
-        principal: Principal
+        bindingResult: BindingResult
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
-        memberCommandService.updatePassword(updatePassword, identity = principal.name)
+        memberCommandService.updatePassword(updatePassword, identifier)
         logger().info(MemberControllerLog.UPDATE_PW_SUCCESS.log)
 
         return MemberResponse.updatePwSuccess()
@@ -113,13 +115,13 @@ class MemberController @Autowired constructor(
 
     @DeleteMapping(MemberUrl.WITHDRAW)
     fun withdraw(
+        @RequestParam(MemberParam.IDENTIFIER) identifier: String,
         @RequestBody @Valid withdrawRequest: WithdrawRequest,
-        bindingResult: BindingResult,
-        principal: Principal
+        bindingResult: BindingResult
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
-        memberCommandService.withdraw(withdrawRequest, identity = principal.name)
+        memberCommandService.withdraw(withdrawRequest, identifier)
         logger().info(MemberControllerLog.WITHDRAW_SUCCESS.log)
 
         return MemberResponse.withdrawSuccess()

@@ -34,7 +34,7 @@ class MemberCommandService @Autowired constructor(
         return with(signupRequest) {
             memberServiceValidator.validateDuplicateEmail(email!!)
             Member.create(email!!, pw!!, auth = Role.MEMBER)
-                .run { memberRepository.save(this).identity }
+                .run { memberRepository.save(this).identifier }
         }
     }
 
@@ -42,7 +42,7 @@ class MemberCommandService @Autowired constructor(
         return with(signupRequest) {
             memberServiceValidator.validateDuplicateEmail(email!!)
             Member.create(email!!, pw!!, auth = Role.PRESIDENT)
-                .run { memberRepository.save(this).identity }
+                .run { memberRepository.save(this).identifier }
         }
     }
 
@@ -54,19 +54,19 @@ class MemberCommandService @Autowired constructor(
         return jwtTokenProvider.generateToken(authentication)
     }
 
-    fun updateEmail(updateEmail: UpdateEmail, identity: String) {
+    fun updateEmail(updateEmail: UpdateEmail, identifier: String) {
         memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
-        memberRepository.findOneByIdentity(identity)
+        memberRepository.findOneByIdentifier(identifier)
             .also { it.updateEmail(updateEmail.newEmail!!) }
     }
 
-    fun updatePassword(updatePassword: UpdatePassword, identity: String) {
-        memberRepository.findOneByIdentity(identity)
+    fun updatePassword(updatePassword: UpdatePassword, identifier: String) {
+        memberRepository.findOneByIdentifier(identifier)
             .also { it.updatePw(updatePassword.newPassword!!, updatePassword.oldPassword!!) }
     }
 
-    fun withdraw(withdrawRequest: WithdrawRequest, identity: String) {
-        memberRepository.findOneByIdentity(identity)
+    fun withdraw(withdrawRequest: WithdrawRequest, identifier: String) {
+        memberRepository.findOneByIdentifier(identifier)
             .takeIf { PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also { memberRepository.delete(it) }
             ?: throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)

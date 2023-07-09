@@ -39,28 +39,28 @@ class MemberRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneByIdentity(identity: String): Member {
+    override fun findOneByIdentifier(identifier: String): Member {
         return try {
             queryFactory.singleQuery {
                 select(entity(Member::class))
                 from(entity(Member::class))
-                where(col(Member::identity).equal(identity))
+                where(col(Member::identifier).equal(identifier))
             }
         } catch (e: NoResultException) {
             throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
         }
     }
 
-    override fun findOneDtoByIdentity(identity: String): MemberInfo {
+    override fun findOneDtoByIdentifier(identifier: String): MemberInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    col(Member::id),
+                    col(Member::identifier),
                     col(Member::email),
                     col(Member::auth)
                 ))
                 from(entity(Member::class))
-                where(col(Member::identity).equal(identity))
+                where(col(Member::identifier).equal(identifier))
             }
         } catch (e: NoResultException) {
             throw MemberException(MemberExceptionMessage.MEMBER_IS_NULL)
