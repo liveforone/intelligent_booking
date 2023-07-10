@@ -2,7 +2,6 @@ package intelligent_booking.intelligent_booking.place.repository
 
 import com.linecorp.kotlinjdsl.query.spec.predicate.PredicateSpec
 import com.linecorp.kotlinjdsl.querydsl.expression.col
-import com.linecorp.kotlinjdsl.querydsl.from.fetch
 import com.linecorp.kotlinjdsl.querydsl.from.join
 import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.listQuery
@@ -18,64 +17,64 @@ import intelligent_booking.intelligent_booking.place.repository.constant.PlaceRe
 import jakarta.persistence.NoResultException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 class PlaceRepositoryImpl @Autowired constructor(
     private val queryFactory: SpringDataQueryFactory
 ) : PlaceCustomRepository {
 
-    override fun findOneDtoById(id: Long): PlaceInfo {
-        return try {
-            queryFactory.singleQuery {
-                select(listOf(
-                    col(Place::id),
-                    col(Place::name),
-                    col(Place::tel),
-                    col(Place::address)
-                ))
-                from(Place::class)
-                where(col(Place::id).equal(id))
-            }
-        } catch (e: NoResultException) {
-            throw PlaceException(PlaceExceptionMessage.PLACE_IS_NULL)
-        }
-    }
-
-    override fun findOneByIdentity(identity: String): Place {
+    override fun findOneByUUID(uuid: UUID): Place {
         return try {
             queryFactory.singleQuery {
                 select(entity(Place::class))
                 from(Place::class)
-                fetch(Place::member)
-                join(Place::member)
-                where(nestedCol(col(Place::member), Member::identity).equal(identity))
+                where(col(Place::uuid).equal(uuid))
             }
         } catch (e: NoResultException) {
             throw PlaceException(PlaceExceptionMessage.PLACE_IS_NULL)
         }
     }
 
-    override fun findOneDtoByIdentity(identity: String): PlaceInfo {
+    override fun findOneDtoByUUID(uuid: UUID): PlaceInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(
-                    col(Place::id),
+                    col(Place::uuid),
                     col(Place::name),
                     col(Place::tel),
                     col(Place::address)
                 ))
                 from(Place::class)
-                where(nestedCol(col(Place::member), Member::identity).equal(identity))
+                where(col(Place::uuid).equal(uuid))
             }
         } catch (e: NoResultException) {
             throw PlaceException(PlaceExceptionMessage.PLACE_IS_NULL)
         }
     }
 
-    override fun findAllDto(lastId: Long): List<PlaceInfo> {
+    override fun findOneDtoByMember(memberUUID: UUID): PlaceInfo {
+        return try {
+            queryFactory.singleQuery {
+                select(listOf(
+                    col(Place::uuid),
+                    col(Place::name),
+                    col(Place::tel),
+                    col(Place::address)
+                ))
+                from(Place::class)
+                join(Place::member)
+                where(col(Member::uuid).equal(memberUUID))
+            }
+        } catch (e: NoResultException) {
+            throw PlaceException(PlaceExceptionMessage.PLACE_IS_NULL)
+        }
+    }
+
+    override fun findAllDto(lastId: Long?): List<PlaceInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Place::id),
+                col(Place::uuid),
                 col(Place::name),
                 col(Place::tel),
                 col(Place::address)
@@ -87,10 +86,10 @@ class PlaceRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun searchByName(name: String, lastId: Long): List<PlaceInfo> {
+    override fun searchByName(name: String, lastId: Long?): List<PlaceInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                col(Place::id),
+                col(Place::uuid),
                 col(Place::name),
                 col(Place::tel),
                 col(Place::address)
@@ -103,13 +102,13 @@ class PlaceRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun searchByAddress(city: String?, roadNum: String?, detail: String?, lastId: Long): List<PlaceInfo> {
+    override fun searchByAddress(city: String?, roadNum: String?, detail: String?, lastId: Long?): List<PlaceInfo> {
         return queryFactory.listQuery {
             select(listOf(
-                    col(Place::id),
-                    col(Place::name),
-                    col(Place::tel),
-                    col(Place::address)
+                col(Place::uuid),
+                col(Place::name),
+                col(Place::tel),
+                col(Place::address)
             ))
             from(Place::class)
             associate(Place::class, Address::class, on(Place::address))
@@ -120,9 +119,8 @@ class PlaceRepositoryImpl @Autowired constructor(
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long): PredicateSpec? {
-        return if (lastId == 0.toLong()) null
-        else and(col(Place::id).lessThan(lastId))
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long?): PredicateSpec? {
+        return lastId?.let { and(col(Place::id).lessThan(lastId)) }
     }
 
     private fun <T> SpringDataCriteriaQueryDsl<T>.searchAddress(
