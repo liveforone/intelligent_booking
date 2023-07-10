@@ -62,8 +62,10 @@ class MemberCommandService @Autowired constructor(
     }
 
     fun updatePassword(updatePassword: UpdatePassword, uuid: UUID) {
-        memberRepository.findOneByUuid(uuid)
-            .also { it.updatePw(updatePassword.newPassword!!, updatePassword.oldPassword!!) }
+        with(updatePassword) {
+            memberRepository.findOneByUuid(uuid)
+                .also { it.updatePw(newPassword!!, oldPassword!!) }
+        }
     }
 
     fun withdraw(withdrawRequest: WithdrawRequest, uuid: UUID) {
