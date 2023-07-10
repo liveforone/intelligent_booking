@@ -37,7 +37,7 @@ class MemberCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getOneByIdentity(identity).auth)
+        Assertions.assertThat(memberQueryService.getOneByUuid(identity).auth)
             .isEqualTo(Role.MEMBER)
     }
 
@@ -54,7 +54,7 @@ class MemberCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getOneByIdentity(identity).auth)
+        Assertions.assertThat(memberQueryService.getOneByUuid(identity).auth)
             .isEqualTo(Role.PRESIDENT)
     }
 
@@ -75,7 +75,7 @@ class MemberCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getOneByIdentity(identity).email)
+        Assertions.assertThat(memberQueryService.getOneByUuid(identity).email)
             .isEqualTo(newEmail)
     }
 }

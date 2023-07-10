@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import java.security.Principal
 import java.util.*
@@ -39,7 +38,7 @@ class MemberController @Autowired constructor(
 
     @GetMapping(MemberUrl.INFO)
     fun memberInfo(principal: Principal): ResponseEntity<*> {
-        val member = memberQueryService.getOneByIdentity(identifier = UUID.fromString(principal.name))
+        val member = memberQueryService.getOneByUuid(uuid = UUID.fromString(principal.name))
         return MemberResponse.infoSuccess(member)
     }
 
@@ -89,13 +88,13 @@ class MemberController @Autowired constructor(
 
     @PutMapping(MemberUrl.UPDATE_EMAIL)
     fun updateEmail(
-        @PathVariable(MemberParam.IDENTIFIER) identifier: UUID,
+        @PathVariable(MemberParam.UUID) uuid: UUID,
         @RequestBody @Valid updateEmail: UpdateEmail,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
-        memberCommandService.updateEmail(updateEmail, identifier)
+        memberCommandService.updateEmail(updateEmail, uuid)
         logger().info(MemberControllerLog.UPDATE_EMAIL_SUCCESS.log)
 
         return MemberResponse.updateEmailSuccess()
@@ -103,13 +102,13 @@ class MemberController @Autowired constructor(
 
     @PutMapping(MemberUrl.UPDATE_PASSWORD)
     fun updatePassword(
-        @PathVariable(MemberParam.IDENTIFIER) identifier: UUID,
+        @PathVariable(MemberParam.UUID) uuid: UUID,
         @RequestBody @Valid updatePassword: UpdatePassword,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
-        memberCommandService.updatePassword(updatePassword, identifier)
+        memberCommandService.updatePassword(updatePassword, uuid)
         logger().info(MemberControllerLog.UPDATE_PW_SUCCESS.log)
 
         return MemberResponse.updatePwSuccess()
@@ -117,13 +116,13 @@ class MemberController @Autowired constructor(
 
     @DeleteMapping(MemberUrl.WITHDRAW)
     fun withdraw(
-        @PathVariable(MemberParam.IDENTIFIER) identifier: UUID,
+        @PathVariable(MemberParam.UUID) uuid: UUID,
         @RequestBody @Valid withdrawRequest: WithdrawRequest,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
         controllerValidator.validateBinding(bindingResult)
 
-        memberCommandService.withdraw(withdrawRequest, identifier)
+        memberCommandService.withdraw(withdrawRequest, uuid)
         logger().info(MemberControllerLog.WITHDRAW_SUCCESS.log)
 
         return MemberResponse.withdrawSuccess()

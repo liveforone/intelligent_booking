@@ -4,7 +4,7 @@ import intelligent_booking.intelligent_booking.member.domain.Role
 import java.util.UUID
 
 data class MemberInfo(
-    val identifier: UUID,
+    val uuid: UUID,
     val email: String,
     val auth: Role
 )

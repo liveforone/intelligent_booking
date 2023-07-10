@@ -35,7 +35,7 @@ class MemberCommandService @Autowired constructor(
         return with(signupRequest) {
             memberServiceValidator.validateDuplicateEmail(email!!)
             Member.create(email!!, pw!!, auth = Role.MEMBER)
-                .run { memberRepository.save(this).identifier }
+                .run { memberRepository.save(this).uuid }
         }
     }
 
@@ -43,7 +43,7 @@ class MemberCommandService @Autowired constructor(
         return with(signupRequest) {
             memberServiceValidator.validateDuplicateEmail(email!!)
             Member.create(email!!, pw!!, auth = Role.PRESIDENT)
-                .run { memberRepository.save(this).identifier }
+                .run { memberRepository.save(this).uuid }
         }
     }
 
@@ -55,19 +55,19 @@ class MemberCommandService @Autowired constructor(
         return jwtTokenProvider.generateToken(authentication)
     }
 
-    fun updateEmail(updateEmail: UpdateEmail, identifier: UUID) {
+    fun updateEmail(updateEmail: UpdateEmail, uuid: UUID) {
         memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
-        memberRepository.findOneByIdentifier(identifier)
+        memberRepository.findOneByUuid(uuid)
             .also { it.updateEmail(updateEmail.newEmail!!) }
     }
 
-    fun updatePassword(updatePassword: UpdatePassword, identifier: UUID) {
-        memberRepository.findOneByIdentifier(identifier)
+    fun updatePassword(updatePassword: UpdatePassword, uuid: UUID) {
+        memberRepository.findOneByUuid(uuid)
             .also { it.updatePw(updatePassword.newPassword!!, updatePassword.oldPassword!!) }
     }
 
-    fun withdraw(withdrawRequest: WithdrawRequest, identifier: UUID) {
-        memberRepository.findOneByIdentifier(identifier)
+    fun withdraw(withdrawRequest: WithdrawRequest, uuid: UUID) {
+        memberRepository.findOneByUuid(uuid)
             .takeIf { PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also { memberRepository.delete(it) }
             ?: throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
