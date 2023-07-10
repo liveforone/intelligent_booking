@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @SpringBootTest
 class PlaceQueryServiceTest @Autowired constructor(
@@ -24,7 +25,7 @@ class PlaceQueryServiceTest @Autowired constructor(
         entityManager.clear()
     }
 
-    private fun createMember(): String {
+    private fun createMember(): UUID {
         val email = "test_place_query@gmail.com"
         val pw = "1234"
         val request = SignupRequest(email, pw)
@@ -50,7 +51,7 @@ class PlaceQueryServiceTest @Autowired constructor(
         val places = placeQueryService.searchByName(keyword, 0)
 
         //then
-        places.map { logger().info("${it.id}") }
+        places.map { logger().info("${it.uuid}") }
     }
 
     @Test
@@ -71,6 +72,6 @@ class PlaceQueryServiceTest @Autowired constructor(
         val places = placeQueryService.searchByAddress("서", "잠", "1", 0)
 
         //then
-        places.map { logger().info("${it.id}") }
+        places.map { logger().info("${it.uuid}") }
     }
 }
