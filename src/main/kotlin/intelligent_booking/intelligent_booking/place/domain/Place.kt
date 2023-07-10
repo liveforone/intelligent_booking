@@ -5,13 +5,13 @@ import intelligent_booking.intelligent_booking.exception.message.PlaceExceptionM
 import intelligent_booking.intelligent_booking.member.domain.Member
 import intelligent_booking.intelligent_booking.place.domain.constant.PlaceConstant
 import jakarta.persistence.*
+import java.util.*
 
 @Entity
 class Place private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
+    @Column(columnDefinition = PlaceConstant.UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
-        name = PlaceConstant.MEMBER_COLUMN_NAME,
-        referencedColumnName = PlaceConstant.IDENTITY,
         updatable = false,
         unique = true
     ) val member: Member,
@@ -21,9 +21,10 @@ class Place private constructor(
 ) {
 
     companion object {
+        private fun createUuid() = UUID.randomUUID()
         fun create(member: Member, name: String, tel: String, address: Address): Place {
-            return if (member.isPresident()) Place(id = null, member, name, tel, address)
-            else throw PlaceException(PlaceExceptionMessage.NOT_PRESIDENT)
+            require(member.isPresident()) { throw PlaceException(PlaceExceptionMessage.NOT_PRESIDENT) }
+            return Place(id = null, uuid = createUuid(), member, name, tel, address)
         }
     }
 
