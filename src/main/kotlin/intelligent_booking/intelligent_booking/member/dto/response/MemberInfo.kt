@@ -5,6 +5,7 @@ import java.util.UUID
 
 data class MemberInfo(
     val uuid: UUID,
+    val auth: Role,
     val email: String,
-    val auth: Role
+    val report: Long
 )
