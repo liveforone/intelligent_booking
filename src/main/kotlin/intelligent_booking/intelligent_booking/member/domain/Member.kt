@@ -15,9 +15,10 @@ import java.util.*
 class Member private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @Column(columnDefinition = MemberConstant.UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
+    @Convert(converter = RoleConverter::class) @Column(nullable = false) val auth: Role,
     @Column(nullable = false) var email: String,
     @Column(nullable = false) var pw: String,
-    @Convert(converter = RoleConverter::class) @Column(nullable = false) val auth: Role
+    @Column(nullable = false) var report: Long
 ) : UserDetails {
 
     companion object {
@@ -29,9 +30,10 @@ class Member private constructor(
             return Member(
                 id = null,
                 uuid = createUuid(),
+                auth = if (isAdmin(email)) Role.ADMIN else auth,
                 email,
                 pw = PasswordUtil.encodePassword(pw),
-                auth = if (isAdmin(email)) Role.ADMIN else auth
+                report = MemberConstant.BASIC_REPORT
             )
         }
     }
@@ -43,6 +45,10 @@ class Member private constructor(
     fun updatePw(newPassword: String, oldPassword: String) {
         require (PasswordUtil.isMatchPassword(oldPassword, pw)) { throw MemberException(MemberExceptionMessage.WRONG_PASSWORD) }
         pw = PasswordUtil.encodePassword(newPassword)
+    }
+
+    fun addReport() {
+        report += MemberConstant.BASIC_VARIATION
     }
 
     fun isPresident() = auth == Role.PRESIDENT
