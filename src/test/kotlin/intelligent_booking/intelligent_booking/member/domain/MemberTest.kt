@@ -35,4 +35,18 @@ class MemberTest {
         //then
         Assertions.assertThat(PasswordUtil.isMatchPassword(newPw, member.pw)).isTrue()
     }
+
+    @Test
+    fun addReportTest() {
+        //given
+        val email = "test1234@gmail.com"
+        val pw = "1234"
+        val member = Member.create(email, pw, Role.MEMBER)
+
+        //when
+        member.addReport()
+
+        //then
+        Assertions.assertThat(member.report).isEqualTo(1)
+    }
 }
