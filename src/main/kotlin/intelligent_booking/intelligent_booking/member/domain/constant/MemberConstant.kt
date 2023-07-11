@@ -5,4 +5,5 @@ object MemberConstant {
     const val ADMIN_EMAIL = "admin_intelligent_booking@gmail.com"
     const val BASIC_REPORT: Long = 0
     const val BASIC_VARIATION: Long = 1
+    const val SUSPEND_LIMIT: Long = 5
 }
