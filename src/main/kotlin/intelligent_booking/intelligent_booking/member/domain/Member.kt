@@ -15,7 +15,7 @@ import java.util.*
 class Member private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @Column(columnDefinition = MemberConstant.UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
-    @Convert(converter = RoleConverter::class) @Column(nullable = false) val auth: Role,
+    @Convert(converter = RoleConverter::class) @Column(nullable = false) var auth: Role,
     @Column(nullable = false) var email: String,
     @Column(nullable = false) var pw: String,
     @Column(nullable = false) var report: Long
@@ -38,6 +38,10 @@ class Member private constructor(
         }
     }
 
+    fun isNotSuspend() = auth != Role.SUSPEND
+
+    fun isPresident() = auth == Role.PRESIDENT
+
     fun updateEmail(newEmail: String) {
         email = newEmail
     }
@@ -48,10 +52,9 @@ class Member private constructor(
     }
 
     fun addReport() {
-        report += MemberConstant.BASIC_VARIATION
+        if (report > MemberConstant.SUSPEND_LIMIT) auth = Role.SUSPEND
+        else report += MemberConstant.BASIC_VARIATION
     }
-
-    fun isPresident() = auth == Role.PRESIDENT
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
