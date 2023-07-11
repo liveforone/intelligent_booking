@@ -33,11 +33,11 @@ class MemberCommandServiceTest @Autowired constructor(
         val request = SignupRequest(email, pw)
 
         //when
-        val identity = memberCommandService.signupMember(request)
+        val uuid = memberCommandService.signupMember(request)
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getOneByUuid(identity).auth)
+        Assertions.assertThat(memberQueryService.getOneByUuid(uuid).auth)
             .isEqualTo(Role.MEMBER)
     }
 
@@ -50,11 +50,11 @@ class MemberCommandServiceTest @Autowired constructor(
         val request = SignupRequest(email, pw)
 
         //when
-        val identity = memberCommandService.signupPresident(request)
+        val uuid = memberCommandService.signupPresident(request)
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getOneByUuid(identity).auth)
+        Assertions.assertThat(memberQueryService.getOneByUuid(uuid).auth)
             .isEqualTo(Role.PRESIDENT)
     }
 
@@ -65,17 +65,36 @@ class MemberCommandServiceTest @Autowired constructor(
         val email = "test3@gmail.com"
         val pw = "1234"
         val request = SignupRequest(email, pw)
-        val identity = memberCommandService.signupMember(request)
+        val uuid = memberCommandService.signupMember(request)
         flushAndClear()
 
         //when
         val newEmail = "test_newEmail@gmail.com"
         val updateRequest = UpdateEmail(newEmail)
-        memberCommandService.updateEmail(updateRequest, identity)
+        memberCommandService.updateEmail(updateRequest, uuid)
         flushAndClear()
 
         //then
-        Assertions.assertThat(memberQueryService.getOneByUuid(identity).email)
+        Assertions.assertThat(memberQueryService.getOneByUuid(uuid).email)
             .isEqualTo(newEmail)
+    }
+
+    @Test
+    @Transactional
+    fun addReportTest() {
+        //given
+        val email = "test4@gmail.com"
+        val pw = "1234"
+        val request = SignupRequest(email, pw)
+        val uuid = memberCommandService.signupMember(request)
+        flushAndClear()
+
+        //when
+        memberCommandService.addReport(uuid)
+        flushAndClear()
+
+        //then
+        Assertions.assertThat(memberQueryService.getOneByUuid(uuid).report)
+            .isEqualTo(1)
     }
 }
