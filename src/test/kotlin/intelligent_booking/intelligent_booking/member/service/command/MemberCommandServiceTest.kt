@@ -97,4 +97,23 @@ class MemberCommandServiceTest @Autowired constructor(
         Assertions.assertThat(memberQueryService.getOneByUuid(uuid).report)
             .isEqualTo(1)
     }
+
+    @Test
+    @Transactional
+    fun suspendTest() {
+        //given
+        val email = "test5@gmail.com"
+        val pw = "1234"
+        val request = SignupRequest(email, pw)
+        val uuid = memberCommandService.signupMember(request)
+        flushAndClear()
+
+        //when
+        repeat(11) { memberCommandService.addReport(uuid) }
+        flushAndClear()
+
+        //then
+        Assertions.assertThat(memberQueryService.getOneByUuid(uuid).auth)
+            .isEqualTo(Role.SUSPEND)
+    }
 }

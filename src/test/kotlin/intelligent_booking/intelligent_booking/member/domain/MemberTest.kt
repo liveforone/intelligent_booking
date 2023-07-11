@@ -7,20 +7,6 @@ import org.junit.jupiter.api.Test
 class MemberTest {
 
     @Test
-    fun suspendTest() {
-        //given
-        val email = "test1234@gmail.com"
-        val pw = "1234"
-        val member = Member.create(email, pw, Role.MEMBER)
-
-        //when
-        member.suspend()
-
-        //then
-        Assertions.assertThat(member.auth).isEqualTo(Role.SUSPEND)
-    }
-
-    @Test
     fun updateEmailTest() {
         //given
         val email = "test1234@gmail.com"
@@ -62,5 +48,19 @@ class MemberTest {
 
         //then
         Assertions.assertThat(member.report).isEqualTo(1)
+    }
+
+    @Test
+    fun suspendTest() {
+        //given
+        val email = "test1234@gmail.com"
+        val pw = "1234"
+        val member = Member.create(email, pw, Role.MEMBER)
+
+        //when
+        repeat(11) { member.addReport() }
+
+        //then
+        Assertions.assertThat(member.auth).isEqualTo(Role.SUSPEND)
     }
 }
