@@ -68,6 +68,11 @@ class MemberCommandService @Autowired constructor(
         }
     }
 
+    fun addReport(uuid: UUID) {
+        memberRepository.findOneByUuid(uuid)
+            .also { it.addReport() }
+    }
+
     fun withdraw(withdrawRequest: WithdrawRequest, uuid: UUID) {
         memberRepository.findOneByUuid(uuid)
             .takeIf { PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw) }
