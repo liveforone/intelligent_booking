@@ -57,8 +57,9 @@ class MemberRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(listOf(
                     col(Member::uuid),
+                    col(Member::auth),
                     col(Member::email),
-                    col(Member::auth)
+                    col(Member::report)
                 ))
                 from(entity(Member::class))
                 where(col(Member::uuid).equal(uuid))
