@@ -1,5 +1,7 @@
 package intelligent_booking.intelligent_booking.member.service.command
 
+import intelligent_booking.intelligent_booking.exception.exception.MemberException
+import intelligent_booking.intelligent_booking.exception.message.MemberExceptionMessage
 import intelligent_booking.intelligent_booking.member.domain.Member
 import intelligent_booking.intelligent_booking.member.domain.Role
 import intelligent_booking.intelligent_booking.member.repository.MemberRepository
@@ -15,7 +17,9 @@ class CustomUserDetailsService @Autowired constructor(
 ) : UserDetailsService {
 
     override fun loadUserByUsername(email: String): UserDetails {
-        return createUserDetails(member = memberRepository.findOneByEmail(email))
+        val member = memberRepository.findOneByEmail(email)
+        check(member.isNotSuspend()) { MemberException(MemberExceptionMessage.SUSPEND_MEMBER) }
+        return createUserDetails(member)
     }
 
     private fun createUserDetails(member: Member): UserDetails {
