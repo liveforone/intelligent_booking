@@ -34,7 +34,7 @@ class MemberCommandService @Autowired constructor(
     fun signupMember(signupRequest: SignupRequest): UUID {
         return with(signupRequest) {
             memberServiceValidator.validateDuplicateEmail(email!!)
-            Member.create(email!!, pw!!, auth = Role.MEMBER)
+            Member.create(email, pw!!, auth = Role.MEMBER)
                 .run { memberRepository.save(this).uuid }
         }
     }
@@ -42,7 +42,7 @@ class MemberCommandService @Autowired constructor(
     fun signupPresident(signupRequest: SignupRequest): UUID {
         return with(signupRequest) {
             memberServiceValidator.validateDuplicateEmail(email!!)
-            Member.create(email!!, pw!!, auth = Role.PRESIDENT)
+            Member.create(email, pw!!, auth = Role.PRESIDENT)
                 .run { memberRepository.save(this).uuid }
         }
     }
@@ -58,7 +58,7 @@ class MemberCommandService @Autowired constructor(
     fun updateEmail(updateEmail: UpdateEmail, uuid: UUID) {
         memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
         memberRepository.findOneByUuid(uuid)
-            .also { it.updateEmail(updateEmail.newEmail!!) }
+            .also { it.updateEmail(updateEmail.newEmail) }
     }
 
     fun updatePassword(updatePassword: UpdatePassword, uuid: UUID) {

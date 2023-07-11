@@ -23,7 +23,6 @@ class Member private constructor(
 
     companion object {
         private fun createUuid() = UUID.randomUUID()
-
         private fun isAdmin(email: String) = (email == MemberConstant.ADMIN_EMAIL)
 
         fun create(email: String, pw: String, auth: Role): Member {
@@ -56,19 +55,14 @@ class Member private constructor(
         else report += MemberConstant.BASIC_VARIATION
     }
 
+
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
         return arrayListOf<GrantedAuthority>(SimpleGrantedAuthority(auth.auth))
     }
-
     override fun getPassword() = pw
-
     override fun getUsername() = uuid.toString()
-
     override fun isAccountNonExpired() = true
-
     override fun isAccountNonLocked() = true
-
     override fun isCredentialsNonExpired() = true
-
     override fun isEnabled() = true
 }
