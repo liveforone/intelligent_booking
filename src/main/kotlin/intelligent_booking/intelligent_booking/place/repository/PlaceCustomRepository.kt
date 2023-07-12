@@ -8,7 +8,7 @@ interface PlaceCustomRepository {
     fun findOneByUUID(uuid: UUID): Place
     fun findOneDtoByUUID(uuid: UUID): PlaceInfo
     fun findOneDtoByMember(memberUUID: UUID): PlaceInfo
-    fun findAllDto(lastId: Long?): List<PlaceInfo>
-    fun searchByName(name: String, lastId: Long?): List<PlaceInfo>
-    fun searchByAddress(city: String?, roadNum: String?, detail: String?, lastId: Long?): List<PlaceInfo>
+    fun findAllDto(lastUUID: UUID?): List<PlaceInfo>
+    fun searchByName(name: String, lastUUID: UUID?): List<PlaceInfo>
+    fun searchByAddress(city: String?, roadNum: String?, detail: String?, lastUUID: UUID?): List<PlaceInfo>
 }

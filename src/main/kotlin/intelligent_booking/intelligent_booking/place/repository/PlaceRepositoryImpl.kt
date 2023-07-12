@@ -71,7 +71,7 @@ class PlaceRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findAllDto(lastId: Long?): List<PlaceInfo> {
+    override fun findAllDto(lastUUID: UUID?): List<PlaceInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Place::uuid),
@@ -80,13 +80,13 @@ class PlaceRepositoryImpl @Autowired constructor(
                 col(Place::address)
             ))
             from(Place::class)
-            where(ltLastId(lastId))
+            where(ltLastUUID(lastUUID))
             orderBy(col(Place::id).desc())
             limit(PlaceRepositoryConstant.LIMIT_PAGE)
         }
     }
 
-    override fun searchByName(name: String, lastId: Long?): List<PlaceInfo> {
+    override fun searchByName(name: String, lastUUID: UUID?): List<PlaceInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Place::uuid),
@@ -96,13 +96,13 @@ class PlaceRepositoryImpl @Autowired constructor(
             ))
             from(Place::class)
             where(col(Place::name).like("$name%"))
-            where(ltLastId(lastId))
+            where(ltLastUUID(lastUUID))
             orderBy(col(Place::id).desc())
             limit(PlaceRepositoryConstant.LIMIT_PAGE)
         }
     }
 
-    override fun searchByAddress(city: String?, roadNum: String?, detail: String?, lastId: Long?): List<PlaceInfo> {
+    override fun searchByAddress(city: String?, roadNum: String?, detail: String?, lastUUID: UUID?): List<PlaceInfo> {
         return queryFactory.listQuery {
             select(listOf(
                 col(Place::uuid),
@@ -113,14 +113,23 @@ class PlaceRepositoryImpl @Autowired constructor(
             from(Place::class)
             associate(Place::class, Address::class, on(Place::address))
             where(searchAddress(city, roadNum, detail))
-            where(ltLastId(lastId))
+            where(ltLastUUID(lastUUID))
             orderBy(col(Place::id).desc())
             limit(PlaceRepositoryConstant.LIMIT_PAGE)
         }
     }
 
-    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastId(lastId: Long?): PredicateSpec? {
-        return lastId?.let { and(col(Place::id).lessThan(lastId)) }
+    private fun findLastId(lastUUID: UUID): Long {
+        return queryFactory.singleQuery {
+            select(listOf(col(Place::id)))
+            from(Place::class)
+            where(col(Place::uuid).equal(lastUUID))
+        }
+    }
+
+    private fun <T> SpringDataCriteriaQueryDsl<T>.ltLastUUID(lastUUID: UUID?): PredicateSpec? {
+        val lastId = lastUUID?.let { findLastId(it) }
+        return lastUUID?.let { and(col(Place::id).lessThan(lastId!!)) }
     }
 
     private fun <T> SpringDataCriteriaQueryDsl<T>.searchAddress(
