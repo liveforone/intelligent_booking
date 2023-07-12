@@ -43,28 +43,28 @@ class PlaceController @Autowired constructor(
     }
 
     @GetMapping(PlaceUrl.PLACE_HOME)
-    fun placeHome(@RequestParam(PlaceParam.LAST_ID, required = false) lastId: Long?): ResponseEntity<*> {
-        val places = placeQueryService.getAll(lastId)
+    fun placeHome(@RequestParam(PlaceParam.LAST_UUID, required = false) lastUUID: UUID?): ResponseEntity<*> {
+        val places = placeQueryService.getAll(lastUUID)
         return PlaceResponse.placeHomeSuccess(places)
     }
 
     @GetMapping(PlaceUrl.SEARCH_NAME)
     fun searchName(
-        @RequestParam(PlaceParam.LAST_ID, required = false) lastId: Long?,
+        @RequestParam(PlaceParam.LAST_UUID, required = false) lastUUID: UUID?,
         @RequestParam(PlaceParam.NAME) name: String
     ): ResponseEntity<*> {
-        val places = placeQueryService.searchByName(name, lastId)
+        val places = placeQueryService.searchByName(name, lastUUID)
         return PlaceResponse.searchNameSuccess(places)
     }
 
     @GetMapping(PlaceUrl.SEARCH_ADDRESS)
     fun searchAddress(
-        @RequestParam(PlaceParam.LAST_ID, required = false) lastId: Long?,
+        @RequestParam(PlaceParam.LAST_UUID, required = false) lastUUID: UUID?,
         @RequestParam(PlaceParam.CITY, required = false) city: String?,
         @RequestParam(PlaceParam.ROAD_NUM, required = false) roadNum: String?,
         @RequestParam(PlaceParam.DETAIL, required = false) detail: String?
     ): ResponseEntity<*> {
-        val places = placeQueryService.searchByAddress(city, roadNum, detail, lastId)
+        val places = placeQueryService.searchByAddress(city, roadNum, detail, lastUUID)
         return PlaceResponse.searchAddressSuccess(places)
     }
 
