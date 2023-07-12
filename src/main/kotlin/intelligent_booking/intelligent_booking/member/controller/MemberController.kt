@@ -37,7 +37,7 @@ class MemberController @Autowired constructor(
 
     @GetMapping(MemberUrl.INFO)
     fun memberInfo(principal: Principal): ResponseEntity<*> {
-        val member = memberQueryService.getOneByUUID(uuid = UUID.fromString(principal.name))
+        val member = memberQueryService.getMemberByUUID(uuid = UUID.fromString(principal.name))
         return MemberResponse.infoSuccess(member)
     }
 
