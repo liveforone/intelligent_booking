@@ -3,6 +3,8 @@ package intelligent_booking.intelligent_booking.member.domain
 import intelligent_booking.intelligent_booking.converter.RoleConverter
 import intelligent_booking.intelligent_booking.exception.exception.MemberException
 import intelligent_booking.intelligent_booking.exception.message.MemberExceptionMessage
+import intelligent_booking.intelligent_booking.globalUtil.UUID_TYPE
+import intelligent_booking.intelligent_booking.globalUtil.createUUID
 import intelligent_booking.intelligent_booking.member.domain.constant.MemberConstant
 import intelligent_booking.intelligent_booking.member.domain.util.PasswordUtil
 import jakarta.persistence.*
@@ -14,7 +16,7 @@ import java.util.*
 @Entity
 class Member private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @Column(columnDefinition = MemberConstant.UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
+    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
     @Convert(converter = RoleConverter::class) @Column(nullable = false) var auth: Role,
     @Column(nullable = false) var email: String,
     @Column(nullable = false) var pw: String,
@@ -22,13 +24,12 @@ class Member private constructor(
 ) : UserDetails {
 
     companion object {
-        private fun createUuid() = UUID.randomUUID()
         private fun isAdmin(email: String) = (email == MemberConstant.ADMIN_EMAIL)
 
         fun create(email: String, pw: String, auth: Role): Member {
             return Member(
                 id = null,
-                uuid = createUuid(),
+                uuid = createUUID(),
                 auth = if (isAdmin(email)) Role.ADMIN else auth,
                 email,
                 pw = PasswordUtil.encodePassword(pw),

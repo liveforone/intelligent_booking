@@ -2,15 +2,16 @@ package intelligent_booking.intelligent_booking.place.domain
 
 import intelligent_booking.intelligent_booking.exception.exception.PlaceException
 import intelligent_booking.intelligent_booking.exception.message.PlaceExceptionMessage
+import intelligent_booking.intelligent_booking.globalUtil.UUID_TYPE
+import intelligent_booking.intelligent_booking.globalUtil.createUUID
 import intelligent_booking.intelligent_booking.member.domain.Member
-import intelligent_booking.intelligent_booking.place.domain.constant.PlaceConstant
 import jakarta.persistence.*
 import java.util.*
 
 @Entity
 class Place private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @Column(columnDefinition = PlaceConstant.UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
+    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
         updatable = false,
         unique = true
@@ -21,10 +22,9 @@ class Place private constructor(
 ) {
 
     companion object {
-        private fun createUuid() = UUID.randomUUID()
         fun create(member: Member, name: String, tel: String, address: Address): Place {
             require(member.isPresident()) { throw PlaceException(PlaceExceptionMessage.NOT_PRESIDENT) }
-            return Place(id = null, uuid = createUuid(), member, name, tel, address)
+            return Place(id = null, uuid = createUUID(), member, name, tel, address)
         }
     }
 
