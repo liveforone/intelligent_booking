@@ -13,7 +13,7 @@ import intelligent_booking.intelligent_booking.member.dto.update.UpdateEmail
 import intelligent_booking.intelligent_booking.member.dto.update.UpdatePassword
 import intelligent_booking.intelligent_booking.member.service.command.MemberCommandService
 import intelligent_booking.intelligent_booking.member.service.query.MemberQueryService
-import intelligent_booking.intelligent_booking.validator.ControllerValidator
+import intelligent_booking.intelligent_booking.validator.validateBinding
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
@@ -32,13 +32,12 @@ import java.util.*
 @RestController
 class MemberController @Autowired constructor(
     private val memberQueryService: MemberQueryService,
-    private val memberCommandService: MemberCommandService,
-    private val controllerValidator: ControllerValidator
+    private val memberCommandService: MemberCommandService
 ) {
 
     @GetMapping(MemberUrl.INFO)
     fun memberInfo(principal: Principal): ResponseEntity<*> {
-        val member = memberQueryService.getOneByUuid(uuid = UUID.fromString(principal.name))
+        val member = memberQueryService.getOneByUUID(uuid = UUID.fromString(principal.name))
         return MemberResponse.infoSuccess(member)
     }
 
@@ -47,7 +46,7 @@ class MemberController @Autowired constructor(
         @RequestBody @Valid signupRequest: SignupRequest,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
-        controllerValidator.validateBinding(bindingResult)
+        validateBinding(bindingResult)
 
         memberCommandService.signupMember(signupRequest)
         logger().info(MemberControllerLog.SIGNUP_SUCCESS.log)
@@ -60,7 +59,7 @@ class MemberController @Autowired constructor(
         @RequestBody @Valid signupRequest: SignupRequest,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
-        controllerValidator.validateBinding(bindingResult)
+        validateBinding(bindingResult)
 
         memberCommandService.signupPresident(signupRequest)
         logger().info(MemberControllerLog.SIGNUP_SUCCESS.log)
@@ -74,7 +73,7 @@ class MemberController @Autowired constructor(
         bindingResult: BindingResult,
         response: HttpServletResponse
     ): ResponseEntity<*> {
-        controllerValidator.validateBinding(bindingResult)
+        validateBinding(bindingResult)
 
         val tokenInfo = memberCommandService.login(loginRequest)
         response.apply {
@@ -92,7 +91,7 @@ class MemberController @Autowired constructor(
         @RequestBody @Valid updateEmail: UpdateEmail,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
-        controllerValidator.validateBinding(bindingResult)
+        validateBinding(bindingResult)
 
         memberCommandService.updateEmail(updateEmail, uuid)
         logger().info(MemberControllerLog.UPDATE_EMAIL_SUCCESS.log)
@@ -106,7 +105,7 @@ class MemberController @Autowired constructor(
         @RequestBody @Valid updatePassword: UpdatePassword,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
-        controllerValidator.validateBinding(bindingResult)
+        validateBinding(bindingResult)
 
         memberCommandService.updatePassword(updatePassword, uuid)
         logger().info(MemberControllerLog.UPDATE_PW_SUCCESS.log)
@@ -120,7 +119,7 @@ class MemberController @Autowired constructor(
         @RequestBody @Valid withdrawRequest: WithdrawRequest,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
-        controllerValidator.validateBinding(bindingResult)
+        validateBinding(bindingResult)
 
         memberCommandService.withdraw(withdrawRequest, uuid)
         logger().info(MemberControllerLog.WITHDRAW_SUCCESS.log)

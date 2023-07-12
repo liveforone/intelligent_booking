@@ -10,7 +10,7 @@ import intelligent_booking.intelligent_booking.place.dto.update.UpdateAddress
 import intelligent_booking.intelligent_booking.place.dto.update.UpdateTel
 import intelligent_booking.intelligent_booking.place.service.command.PlaceCommandService
 import intelligent_booking.intelligent_booking.place.service.query.PlaceQueryService
-import intelligent_booking.intelligent_booking.validator.ControllerValidator
+import intelligent_booking.intelligent_booking.validator.validateBinding
 import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
@@ -27,13 +27,12 @@ import java.util.UUID
 @RestController
 class PlaceController @Autowired constructor(
     private val placeQueryService: PlaceQueryService,
-    private val placeCommandService: PlaceCommandService,
-    private val controllerValidator: ControllerValidator
+    private val placeCommandService: PlaceCommandService
 ) {
 
     @GetMapping(PlaceUrl.DETAIL)
     fun detail(@PathVariable(PlaceParam.UUID) uuid: UUID): ResponseEntity<*> {
-        val place = placeQueryService.getOneByUuid(uuid)
+        val place = placeQueryService.getOneByUUID(uuid)
         return PlaceResponse.placeDetailSuccess(place)
     }
 
@@ -75,7 +74,7 @@ class PlaceController @Autowired constructor(
         @RequestBody @Valid createPlace: CreatePlace,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
-        controllerValidator.validateBinding(bindingResult)
+        validateBinding(bindingResult)
 
         placeCommandService.createPlace(createPlace, memberUUID)
         logger().info(PlaceControllerLog.CREATE_PLACE_SUCCESS.log)
@@ -89,7 +88,7 @@ class PlaceController @Autowired constructor(
         @RequestBody @Valid updateTel: UpdateTel,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
-        controllerValidator.validateBinding(bindingResult)
+        validateBinding(bindingResult)
 
         placeCommandService.updateTel(updateTel, uuid)
         logger().info(PlaceControllerLog.UPDATE_TEL_SUCCESS.log)
@@ -103,7 +102,7 @@ class PlaceController @Autowired constructor(
         @RequestBody @Valid updateAddress: UpdateAddress,
         bindingResult: BindingResult
     ): ResponseEntity<*> {
-        controllerValidator.validateBinding(bindingResult)
+        validateBinding(bindingResult)
 
         placeCommandService.updateAddress(updateAddress, uuid)
         logger().info(PlaceControllerLog.UPDATE_ADDRESS_SUCCESS.log)
