@@ -1,0 +1,5 @@
+package intelligent_booking.intelligent_booking.exception.exception
+
+import intelligent_booking.intelligent_booking.exception.message.TimetableExceptionMessage
+
+class TimetableException(val timetableExceptionMessage: TimetableExceptionMessage) : RuntimeException(timetableExceptionMessage.message)
