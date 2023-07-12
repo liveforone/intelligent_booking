@@ -16,11 +16,11 @@ class PlaceQueryService @Autowired constructor(
 
     fun getOneByMember(memberUUID: UUID) = placeRepository.findOneDtoByMember(memberUUID)
 
-    fun getAll(lastId: Long?) = placeRepository.findAllDto(lastId)
+    fun getAll(lastUUID: UUID?) = placeRepository.findAllDto(lastUUID)
 
-    fun searchByName(name: String, lastId: Long?) = placeRepository.searchByName(name, lastId)
+    fun searchByName(name: String, lastUUID: UUID?) = placeRepository.searchByName(name, lastUUID)
 
-    fun searchByAddress(city: String?, roadNum: String?, detail: String?, lastId: Long?): List<PlaceInfo> {
-        return placeRepository.searchByAddress(city, roadNum, detail, lastId)
+    fun searchByAddress(city: String?, roadNum: String?, detail: String?, lastUUID: UUID?): List<PlaceInfo> {
+        return placeRepository.searchByAddress(city, roadNum, detail, lastUUID)
     }
 }

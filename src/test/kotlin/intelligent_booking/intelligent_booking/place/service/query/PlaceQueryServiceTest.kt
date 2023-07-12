@@ -43,12 +43,12 @@ class PlaceQueryServiceTest @Autowired constructor(
         val roadNum = "잠실"
         val detail = "101동 102호"
         val request = CreatePlace(name, tel, city, roadNum, detail)
-        placeCommandService.createPlace(request, member)
+        val uuid = placeCommandService.createPlace(request, member)
         flushAndClear()
 
         //when
         val keyword = "t"
-        val places = placeQueryService.searchByName(keyword, 0)
+        val places = placeQueryService.searchByName(keyword, uuid)
 
         //then
         places.map { logger().info("${it.uuid}") }
@@ -69,7 +69,7 @@ class PlaceQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val places = placeQueryService.searchByAddress("서", "잠", "1", 0)
+        val places = placeQueryService.searchByAddress("서", "잠", "1", null)
 
         //then
         places.map { logger().info("${it.uuid}") }
