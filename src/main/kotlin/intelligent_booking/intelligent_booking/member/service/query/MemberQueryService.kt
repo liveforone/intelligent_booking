@@ -11,5 +11,5 @@ import java.util.*
 class MemberQueryService @Autowired constructor(
     private val memberRepository: MemberRepository
 ) {
-    fun getOneByUuid(uuid: UUID) = memberRepository.findOneDtoByUuid(uuid)
+    fun getOneByUUID(uuid: UUID) = memberRepository.findOneDtoByUUID(uuid)
 }

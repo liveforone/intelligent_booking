@@ -22,7 +22,7 @@ class PlaceCommandService @Autowired constructor(
     fun createPlace(createPlace: CreatePlace, memberUUID: UUID): UUID {
         return with(createPlace) {
             Place.create(
-                member = memberRepository.findOneByUuid(memberUUID),
+                member = memberRepository.findOneByUUID(memberUUID),
                 name!!,
                 tel!!,
                 Address(city!!, roadNum!!, detail!!)

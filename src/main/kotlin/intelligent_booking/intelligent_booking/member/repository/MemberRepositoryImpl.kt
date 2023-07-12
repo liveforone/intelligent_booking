@@ -40,7 +40,7 @@ class MemberRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneByUuid(uuid: UUID): Member {
+    override fun findOneByUUID(uuid: UUID): Member {
         return try {
             queryFactory.singleQuery {
                 select(entity(Member::class))
@@ -52,7 +52,7 @@ class MemberRepositoryImpl @Autowired constructor(
         }
     }
 
-    override fun findOneDtoByUuid(uuid: UUID): MemberInfo {
+    override fun findOneDtoByUUID(uuid: UUID): MemberInfo {
         return try {
             queryFactory.singleQuery {
                 select(listOf(

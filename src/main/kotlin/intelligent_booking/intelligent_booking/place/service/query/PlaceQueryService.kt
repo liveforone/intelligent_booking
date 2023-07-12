@@ -12,7 +12,7 @@ import java.util.UUID
 class PlaceQueryService @Autowired constructor(
     private val placeRepository: PlaceRepository
 ) {
-    fun getOneByUuid(uuid: UUID) = placeRepository.findOneDtoByUUID(uuid)
+    fun getOneByUUID(uuid: UUID) = placeRepository.findOneDtoByUUID(uuid)
 
     fun getOneByMember(memberUUID: UUID) = placeRepository.findOneDtoByMember(memberUUID)
 

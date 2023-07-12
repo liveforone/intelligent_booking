@@ -57,24 +57,24 @@ class MemberCommandService @Autowired constructor(
 
     fun updateEmail(updateEmail: UpdateEmail, uuid: UUID) {
         memberServiceValidator.validateDuplicateEmail(updateEmail.newEmail!!)
-        memberRepository.findOneByUuid(uuid)
+        memberRepository.findOneByUUID(uuid)
             .also { it.updateEmail(updateEmail.newEmail) }
     }
 
     fun updatePassword(updatePassword: UpdatePassword, uuid: UUID) {
         with(updatePassword) {
-            memberRepository.findOneByUuid(uuid)
+            memberRepository.findOneByUUID(uuid)
                 .also { it.updatePw(newPassword!!, oldPassword!!) }
         }
     }
 
     fun addReport(uuid: UUID) {
-        memberRepository.findOneByUuid(uuid)
+        memberRepository.findOneByUUID(uuid)
             .also { it.addReport() }
     }
 
     fun withdraw(withdrawRequest: WithdrawRequest, uuid: UUID) {
-        memberRepository.findOneByUuid(uuid)
+        memberRepository.findOneByUUID(uuid)
             .takeIf { PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw) }
             ?.also { memberRepository.delete(it) }
             ?: throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
