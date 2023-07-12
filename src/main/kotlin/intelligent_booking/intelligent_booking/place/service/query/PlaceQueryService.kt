@@ -12,15 +12,15 @@ import java.util.UUID
 class PlaceQueryService @Autowired constructor(
     private val placeRepository: PlaceRepository
 ) {
-    fun getOneByUUID(uuid: UUID) = placeRepository.findOneDtoByUUID(uuid)
+    fun getPlaceByUUID(uuid: UUID) = placeRepository.findOneDtoByUUID(uuid)
 
-    fun getOneByMember(memberUUID: UUID) = placeRepository.findOneDtoByMember(memberUUID)
+    fun getPlaceByMember(memberUUID: UUID) = placeRepository.findOneDtoByMember(memberUUID)
 
-    fun getAll(lastUUID: UUID?) = placeRepository.findAllDto(lastUUID)
+    fun getAllPlace(lastUUID: UUID?) = placeRepository.findAllDto(lastUUID)
 
-    fun searchByName(name: String, lastUUID: UUID?) = placeRepository.searchByName(name, lastUUID)
+    fun searchPlaceByName(name: String, lastUUID: UUID?) = placeRepository.searchByName(name, lastUUID)
 
-    fun searchByAddress(city: String?, roadNum: String?, detail: String?, lastUUID: UUID?): List<PlaceInfo> {
+    fun searchPlaceByAddress(city: String?, roadNum: String?, detail: String?, lastUUID: UUID?): List<PlaceInfo> {
         return placeRepository.searchByAddress(city, roadNum, detail, lastUUID)
     }
 }

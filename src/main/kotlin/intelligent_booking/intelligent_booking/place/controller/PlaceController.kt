@@ -32,19 +32,19 @@ class PlaceController @Autowired constructor(
 
     @GetMapping(PlaceUrl.DETAIL)
     fun detail(@PathVariable(PlaceParam.UUID) uuid: UUID): ResponseEntity<*> {
-        val place = placeQueryService.getOneByUUID(uuid)
+        val place = placeQueryService.getPlaceByUUID(uuid)
         return PlaceResponse.placeDetailSuccess(place)
     }
 
     @GetMapping(PlaceUrl.MY_PLACE)
     fun myPlace(@PathVariable(PlaceParam.MEMBER_UUID) memberUUID: UUID): ResponseEntity<*> {
-        val place = placeQueryService.getOneByMember(memberUUID)
+        val place = placeQueryService.getPlaceByMember(memberUUID)
         return PlaceResponse.myPlaceSuccess(place)
     }
 
     @GetMapping(PlaceUrl.PLACE_HOME)
     fun placeHome(@RequestParam(PlaceParam.LAST_UUID, required = false) lastUUID: UUID?): ResponseEntity<*> {
-        val places = placeQueryService.getAll(lastUUID)
+        val places = placeQueryService.getAllPlace(lastUUID)
         return PlaceResponse.placeHomeSuccess(places)
     }
 
@@ -53,7 +53,7 @@ class PlaceController @Autowired constructor(
         @RequestParam(PlaceParam.LAST_UUID, required = false) lastUUID: UUID?,
         @RequestParam(PlaceParam.NAME) name: String
     ): ResponseEntity<*> {
-        val places = placeQueryService.searchByName(name, lastUUID)
+        val places = placeQueryService.searchPlaceByName(name, lastUUID)
         return PlaceResponse.searchNameSuccess(places)
     }
 
@@ -64,7 +64,7 @@ class PlaceController @Autowired constructor(
         @RequestParam(PlaceParam.ROAD_NUM, required = false) roadNum: String?,
         @RequestParam(PlaceParam.DETAIL, required = false) detail: String?
     ): ResponseEntity<*> {
-        val places = placeQueryService.searchByAddress(city, roadNum, detail, lastUUID)
+        val places = placeQueryService.searchPlaceByAddress(city, roadNum, detail, lastUUID)
         return PlaceResponse.searchAddressSuccess(places)
     }
 

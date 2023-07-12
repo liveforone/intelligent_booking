@@ -56,7 +56,7 @@ class PlaceCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(placeQueryService.getOneByMember(member).uuid).isEqualTo(uuid)
+        Assertions.assertThat(placeQueryService.getPlaceByMember(member).uuid).isEqualTo(uuid)
     }
 
     @Test
@@ -80,7 +80,7 @@ class PlaceCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(placeQueryService.getOneByUUID(uuid).tel).isEqualTo(updatedTel)
+        Assertions.assertThat(placeQueryService.getPlaceByUUID(uuid).tel).isEqualTo(updatedTel)
     }
 
     @Test
@@ -106,7 +106,7 @@ class PlaceCommandServiceTest @Autowired constructor(
         flushAndClear()
 
         //then
-        Assertions.assertThat(placeQueryService.getOneByUUID(uuid).address)
+        Assertions.assertThat(placeQueryService.getPlaceByUUID(uuid).address)
             .isEqualTo(Address(updatedCity, updatedRoad, updatedDetail))
     }
 }

@@ -48,7 +48,7 @@ class PlaceQueryServiceTest @Autowired constructor(
 
         //when
         val keyword = "t"
-        val places = placeQueryService.searchByName(keyword, uuid)
+        val places = placeQueryService.searchPlaceByName(keyword, uuid)
 
         //then
         places.map { logger().info("${it.uuid}") }
@@ -69,7 +69,7 @@ class PlaceQueryServiceTest @Autowired constructor(
         flushAndClear()
 
         //when
-        val places = placeQueryService.searchByAddress("서", "잠", "1", null)
+        val places = placeQueryService.searchPlaceByAddress("서", "잠", "1", null)
 
         //then
         places.map { logger().info("${it.uuid}") }
