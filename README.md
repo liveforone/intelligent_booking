@@ -65,7 +65,7 @@ jwt 종속성을 피하기 위해, 회원 도메인 이외에는 api에 파라�
 
 
 ==도메인==
-timetable_reservation -> timetableUUID, memberUUID(신고 및 회원 확인), createtime
+timetable_reservation -> timetableUUID, memberUUID(신고 및 회원 확인), createtime, 삭제안함
 recommend
 
 
@@ -75,8 +75,3 @@ recommend
 노쇼시 회원 신고하기
 신고는 하루안에 가능함, 신고는 따로 도메인 빼기(이벤트 핸들러로)
 신고처리 후 5건 넘었을때 정지된 계정인지 확인
-
-
-==전체 삭제==
-연관 데이터 삭제시에 jpql사용해서 직접 쿼리 써서 벌크연산하도록
-그러면 문제없음
