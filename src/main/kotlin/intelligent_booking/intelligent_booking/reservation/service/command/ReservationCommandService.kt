@@ -1,5 +1,6 @@
 package intelligent_booking.intelligent_booking.reservation.service.command
 
+import intelligent_booking.intelligent_booking.member.domain.Member
 import intelligent_booking.intelligent_booking.member.repository.MemberRepository
 import intelligent_booking.intelligent_booking.reservation.domain.Reservation
 import intelligent_booking.intelligent_booking.reservation.dto.request.CreateReservation
@@ -41,5 +42,9 @@ class ReservationCommandService @Autowired constructor(
                 it.cancel()
                 timetableCommandService.restoreOneCount(it.timetable.uuid)
             }
+    }
+
+    fun deleteReservationByMember(member: Member) {
+        reservationRepository.deleteBulkByMember(member)
     }
 }
