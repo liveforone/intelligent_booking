@@ -18,7 +18,7 @@ class CustomUserDetailsService @Autowired constructor(
 
     override fun loadUserByUsername(email: String): UserDetails {
         val member = memberRepository.findOneByEmail(email)
-        check(member.isNotSuspend()) { MemberException(MemberExceptionMessage.SUSPEND_MEMBER) }
+        check(member.isNotSuspend()) { throw MemberException(MemberExceptionMessage.SUSPEND_MEMBER) }
         return createUserDetails(member)
     }
 

@@ -16,7 +16,7 @@ import java.util.*
 @Entity
 class Member private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
+    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID = createUUID(),
     @Convert(converter = RoleConverter::class) @Column(nullable = false) var auth: Role,
     @Column(nullable = false) var email: String,
     @Column(nullable = false) var pw: String,
@@ -29,9 +29,8 @@ class Member private constructor(
         fun create(email: String, pw: String, auth: Role): Member {
             return Member(
                 id = null,
-                uuid = createUUID(),
                 auth = if (isAdmin(email)) Role.ADMIN else auth,
-                email,
+                email = email,
                 pw = PasswordUtil.encodePassword(pw),
                 report = MemberConstant.BASIC_REPORT
             )

@@ -11,7 +11,7 @@ import java.util.*
 @Entity
 class Place private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
+    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID = createUUID(),
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
         updatable = false,
         unique = true
@@ -24,7 +24,7 @@ class Place private constructor(
     companion object {
         fun create(member: Member, name: String, tel: String, address: Address): Place {
             require(member.isPresident()) { throw PlaceException(PlaceExceptionMessage.NOT_PRESIDENT) }
-            return Place(id = null, uuid = createUUID(), member, name, tel, address)
+            return Place(id = null, member = member, name = name, tel = tel, address = address)
         }
     }
 

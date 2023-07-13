@@ -12,7 +12,7 @@ import intelligent_booking.intelligent_booking.timetable.domain.constant.Timetab
 @Entity
 class Timetable private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
-    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID,
+    @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID = createUUID(),
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) val place: Place,
     @Column(updatable = false, nullable = false) val basicCount: Long,
     @Column(nullable = false) var remainingCount: Long,
@@ -30,20 +30,23 @@ class Timetable private constructor(
         ): Timetable {
             return Timetable(
                 id = null,
-                uuid = createUUID(),
-                place,
-                basicCount,
+                place = place,
+                basicCount = basicCount,
                 remainingCount = basicCount,
-                reservationHour,
-                reservationMinute,
-                description
+                reservationHour = reservationHour,
+                reservationMinute = reservationMinute,
+                description = description
             )
         }
     }
 
     fun subtractCount() {
-        check(remainingCount - constant.ONE_COUNT >= constant.SUBTRACT_LIMIT_COUNT) { TimetableException(TimetableExceptionMessage.REMAINING_COUNT_CANT_BE_MINUS) }
+        check(remainingCount - constant.ONE_COUNT >= constant.SUBTRACT_LIMIT_COUNT) { throw TimetableException(TimetableExceptionMessage.REMAINING_COUNT_CANT_BE_MINUS) }
         remainingCount -= constant.ONE_COUNT
+    }
+
+    fun restoreOneCount() {
+        remainingCount += constant.ONE_COUNT
     }
 
     fun updateDescription(description: String) {
