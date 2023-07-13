@@ -36,6 +36,19 @@ class PlaceRepositoryImpl @Autowired constructor(
         }
     }
 
+    override fun findOneByMember(memberUUID: UUID): Place {
+        return try {
+            queryFactory.singleQuery {
+                select(entity(Place::class))
+                from(Place::class)
+                join(Place::member)
+                where(col(Member::uuid).equal(memberUUID))
+            }
+        } catch (e: NoResultException) {
+            throw PlaceException(PlaceExceptionMessage.PLACE_IS_NULL)
+        }
+    }
+
     override fun findOneDtoByUUID(uuid: UUID): PlaceInfo {
         return try {
             queryFactory.singleQuery {
