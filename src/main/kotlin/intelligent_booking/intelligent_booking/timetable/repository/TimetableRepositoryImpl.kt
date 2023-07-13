@@ -40,12 +40,14 @@ class TimetableRepositoryImpl @Autowired constructor(
             queryFactory.singleQuery {
                 select(listOf(
                     col(Timetable::uuid),
+                    col(Place::uuid),
                     col(Timetable::remainingCount),
                     col(Timetable::reservationHour),
                     col(Timetable::reservationMinute),
                     col(Timetable::description)
                 ))
                 from(Timetable::class)
+                join(Timetable::place)
                 where(col(Timetable::uuid).equal(uuid))
             }
         } catch (e: NoResultException) {
@@ -57,6 +59,7 @@ class TimetableRepositoryImpl @Autowired constructor(
         return queryFactory.listQuery {
             select(listOf(
                 col(Timetable::uuid),
+                col(Place::uuid),
                 col(Timetable::remainingCount),
                 col(Timetable::reservationHour),
                 col(Timetable::reservationMinute),
