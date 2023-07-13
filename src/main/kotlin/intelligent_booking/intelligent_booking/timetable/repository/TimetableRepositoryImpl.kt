@@ -7,7 +7,6 @@ import com.linecorp.kotlinjdsl.spring.data.SpringDataQueryFactory
 import com.linecorp.kotlinjdsl.spring.data.listQuery
 import com.linecorp.kotlinjdsl.spring.data.querydsl.SpringDataCriteriaQueryDsl
 import com.linecorp.kotlinjdsl.spring.data.singleQuery
-import com.linecorp.kotlinjdsl.spring.data.updateQuery
 import intelligent_booking.intelligent_booking.exception.exception.TimetableException
 import intelligent_booking.intelligent_booking.exception.message.TimetableExceptionMessage
 import intelligent_booking.intelligent_booking.place.domain.Place
