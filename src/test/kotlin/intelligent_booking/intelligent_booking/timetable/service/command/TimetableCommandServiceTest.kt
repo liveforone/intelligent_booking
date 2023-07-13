@@ -10,8 +10,6 @@ import intelligent_booking.intelligent_booking.timetable.service.query.Timetable
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.transaction.annotation.Transactional
@@ -89,6 +87,30 @@ class TimetableCommandServiceTest @Autowired constructor(
         //then
         Assertions.assertThat(timetableQueryService.getTimetableByUUID(uuid).remainingCount)
             .isEqualTo(basicCount - 1)
+    }
+
+    @Test
+    @Transactional
+    fun addCountTest() {
+        //given
+        val memberUUID = createMember()
+        val placeUUID = createPlace(memberUUID)
+        val basicCount: Long = 5
+        val reservationHour: Long = 12
+        val reservationMinute: Long = 35
+        val description = "test_description"
+        val request = CreateTimetable(placeUUID, basicCount, reservationHour, reservationMinute, description)
+        val uuid = timetableCommandService.createTimetable(request)
+        timetableCommandService.subtractCount(uuid)
+        flushAndClear()
+
+        //when
+        timetableCommandService.restoreOneCount(uuid)
+        flushAndClear()
+
+        //then
+        Assertions.assertThat(timetableQueryService.getTimetableByUUID(uuid).remainingCount)
+            .isEqualTo(basicCount)
     }
 
     @Test

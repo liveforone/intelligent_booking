@@ -37,6 +37,11 @@ class TimetableCommandService @Autowired constructor(
             .also { it.subtractCount() }
     }
 
+    fun restoreOneCount(uuid: UUID) {
+        timetableRepository.findOneByUUID(uuid)
+            .also { it.restoreOneCount() }
+    }
+
     fun updateDescription(updateDescription: UpdateDescription, uuid: UUID) {
         timetableRepository.findOneByUUID(uuid)
             .also { it.updateDescription(updateDescription.description!!) }
