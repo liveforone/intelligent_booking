@@ -15,11 +15,7 @@ object PlaceResponse {
     fun placeHomeSuccess(places: List<PlaceInfo>) = ResponseEntity.ok(places)
     fun searchNameSuccess(places: List<PlaceInfo>) = ResponseEntity.ok(places)
     fun searchAddressSuccess(places: List<PlaceInfo>) = ResponseEntity.ok(places)
-    fun createPlaceSuccess(): ResponseEntity<String> {
-        return ResponseEntity
-            .status(HttpStatus.CREATED)
-            .body(CREATE_PLACE_SUCCESS)
-    }
+    fun createPlaceSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(CREATE_PLACE_SUCCESS)
     fun updateTelSuccess() = ResponseEntity.ok(UPDATE_TEL_SUCCESS)
     fun updateAddressSuccess() = ResponseEntity.ok(UPDATE_ADDRESS_SUCCESS)
 }
