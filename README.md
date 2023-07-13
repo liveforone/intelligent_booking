@@ -22,19 +22,35 @@
 
 # 2. 프로젝트 설계
 ## 시스템 설계
+* [전체 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/DESIGN.md)
 * [DB 설계]()
 * [흐름도]()
 ## 엔티티 설계
 * [회원 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/MEMBER_DESIGN.md)
 * [장소 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/PLACE_DESIGN.md)
-
+* [타임 테이블 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/TIMETABLE_DESIGN.md)
+* [예약 설계]()
 
 # 3. 고민점
 ## 기술적 고민
 * [내부식별자와 외부 식별자 구분](https://github.com/liveforone/intelligent_booking/blob/master/Documents/INTERNAL_EXTERNAL_ID.md)
-* [jdsl 동적쿼리 및 컨트롤러 파라미터]()
-* [jwt에 종속적이지 않게 만들기]()
+* [이메일(아이디)은 유니크로 두지 않는다]() -> 외무 종속성 피하려고
+* [Jdsl 많은 조건 동적쿼리 및 컨트롤러 파라미터]() -> place에 address 동적쿼리로 설명
+* [JWT에 종속적이지 않게 만들기]()
+* [UUID 사용시 No-Offset]() -> timetable에 동적쿼리로 설명
+* [Jdsl 벌크연산]() -> 롤백쿼리는 jpql로 직접 날림. 이유는 jdsl이 set 파라미터에서 컬럼값을 받지 않아서 벌크연산 처리할때에는 1차캐시를 무시하기때문에 clearAutomatically = true를 하여 clear해준다.
+* [Jdsl 임베디드 컬럼 꺼내는법]()
 ## 비즈니스적 고민
+
+
+==테이블 정규화==
+테이블을 정규화(쪼개는) 하는 기준은 사용자로 볼 수 있다.
+일례로 주문 테이블을 만들때 주문 테이블을 일반 회원도 보고, 셀러도 본다면 사용자가 둘이다.
+그런데 일반회원이 탈퇴한다면 주문테이블이 삭제되게 만들게되면 이는 셀러에게 영향을 준다.
+셀러는 해당 주문 데이터를 기반으로 매출을 산정하거나 할것인데 말이다.
+따라서 테이블은 쪼개질때 까지 쪼개는 것이 옳다.
+사용범위나 목적이 조금이라도 달라지면 테이블을 분리하는것이 옳다.
+
 
 ==jwt 고민1==
 jwt 토큰 파싱은 사실상 백엔드만 가능하다. 
@@ -47,8 +63,6 @@ jwt 토큰 파싱은 사실상 백엔드만 가능하다.
 검증을 위해 한번 더 하는 것은 좋다고 생각
 jwt 종속성을 피하기 위해, 회원 도메인 이외에는 api에 파라미터로 받아서 사용한다. 파싱객체 사용안한다.
 
-
-
 ==필요 로직==
 예약은 시간으로 예약하는게 있고, 순번으로 예약하는게 있음.
 좀 구체적으로, 일례로 순번이 있는 경우도 있어서 그런것에 대응해야함
@@ -59,29 +73,28 @@ jwt 종속성을 피하기 위해, 회원 도메인 이외에는 api에 파라�
 예약란에서 노쇼시 회원 신고하기
 
 
-==공통==
+==공통== -> 디자인에 정리
 1. 단일 함수리턴값 생략하여 타입 추론
 2. 이메일(아이디)은 유니크로 두지 않는다. -> 외부 종속성 피하려고
 3. require과 check를 통해서 밸리데이션 -> 논리를 잘 생각해야함.
 4. 모든 엔티티에 identifier 두어서 외부에 제공하기(dto에서도 pk 노출금지), path에 넣어서 받기
 5. 동적쿼리 파라미터 컨트롤러 required = false
+6. 원하는 필드만 조회하거나, 연관관계가 조건절에만 필요한 경우 fetch join이 아닌 그냥 join을 쓴다.
 
 
 ==도메인==
-timetable
 reservation
 recommend
 
 
 ==할것==
+예약을 사용자가 하는 예약과 오너가 보는 예약으로 나누어서 진행한다.
+이에 따라 회원탈퇴시 예약이 삭제되도 오너가 보는 예약은 삭제 안되도록 진행한다.
+타임테이블 잔여 예악자 마이너스
+회원신고 가능하게
 신고처리 후 5건 넘었을때 정지된 계정인지 확인
 
-==문서 할것==
-쿼리 테스트 이유 : 복잡한 쿼리(조건만 3개임 ㅋㅋ)의 경우는 테스트해보자
-jdsl 임베디드 컬럼 꺼내는법 문서화
-많은 조건에서 동적쿼리 문서화 -> 예시로 주소로검색 사용
-이메일(아이디)은 유니크로 두지 않는다. -> 외무 종속성 피하려고
-===
 
-==생각해볼것==
-place 삭제 가능하게 설계?
+==전체 삭제==
+연관 데이터 삭제시에 jpql사용해서 직접 쿼리 써서 벌크연산하도록
+그러면 문제없음
