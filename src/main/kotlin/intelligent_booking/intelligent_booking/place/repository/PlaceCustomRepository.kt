@@ -6,6 +6,7 @@ import java.util.UUID
 
 interface PlaceCustomRepository {
     fun findOneByUUID(uuid: UUID): Place
+    fun findOneByMember(memberUUID: UUID): Place
     fun findOneDtoByUUID(uuid: UUID): PlaceInfo
     fun findOneDtoByMember(memberUUID: UUID): PlaceInfo
     fun findAllDto(lastUUID: UUID?): List<PlaceInfo>
