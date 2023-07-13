@@ -1,0 +1,6 @@
+package intelligent_booking.intelligent_booking.reservation.repository
+
+import intelligent_booking.intelligent_booking.reservation.domain.Reservation
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface ReservationRepository : JpaRepository<Reservation, Long>, ReservationCustomRepository
