@@ -29,7 +29,7 @@
 * [회원 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/MEMBER_DESIGN.md)
 * [장소 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/PLACE_DESIGN.md)
 * [타임 테이블 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/TIMETABLE_DESIGN.md)
-* [예약 설계]()
+* [예약 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/RESERVATION_DESIGN.md)
 
 # 3. 고민점
 ## 기술적 고민
@@ -63,35 +63,17 @@ jwt 토큰 파싱은 사실상 백엔드만 가능하다.
 검증을 위해 한번 더 하는 것은 좋다고 생각
 jwt 종속성을 피하기 위해, 회원 도메인 이외에는 api에 파라미터로 받아서 사용한다. 파싱객체 사용안한다.
 
-==필요 로직==
-예약은 시간으로 예약하는게 있고, 순번으로 예약하는게 있음.
-좀 구체적으로, 일례로 순번이 있는 경우도 있어서 그런것에 대응해야함
-순번으로 받는 경우에는 타임테이블을 하나만 등록하고, 시간과 분을 하루 종일 설정하면된다.
-타임테이블은 여러개를 둘경우 예약 시간을 첫 시간부터 원하는 시간까지 타임테이블을 설정하면되고
-순차구조인경우 첫 시간만 설정하고 예약 가능자수를 원하는 만큼 두면된다. 
-예약 가능자수는 기본수 두지않고 반드시 입력받는다.
-예약란에서 노쇼시 회원 신고하기
-
-
-==공통== -> 디자인에 정리
-1. 단일 함수리턴값 생략하여 타입 추론
-2. 이메일(아이디)은 유니크로 두지 않는다. -> 외부 종속성 피하려고
-3. require과 check를 통해서 밸리데이션 -> 논리를 잘 생각해야함.
-4. 모든 엔티티에 identifier 두어서 외부에 제공하기(dto에서도 pk 노출금지), path에 넣어서 받기
-5. 동적쿼리 파라미터 컨트롤러 required = false
-6. 원하는 필드만 조회하거나, 연관관계가 조건절에만 필요한 경우 fetch join이 아닌 그냥 join을 쓴다.
-
 
 ==도메인==
-reservation
+timetable_reservation -> timetableUUID, memberUUID(신고 및 회원 확인), createtime
 recommend
 
 
 ==할것==
 예약을 사용자가 하는 예약과 오너가 보는 예약으로 나누어서 진행한다.
 이에 따라 회원탈퇴시 예약이 삭제되도 오너가 보는 예약은 삭제 안되도록 진행한다.
-타임테이블 잔여 예악자 마이너스
-회원신고 가능하게
+노쇼시 회원 신고하기
+신고는 하루안에 가능함, 신고는 따로 도메인 빼기(이벤트 핸들러로)
 신고처리 후 5건 넘었을때 정지된 계정인지 확인
 
 
