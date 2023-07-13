@@ -14,6 +14,8 @@ import intelligent_booking.intelligent_booking.member.dto.update.UpdatePassword
 import intelligent_booking.intelligent_booking.member.repository.MemberRepository
 import intelligent_booking.intelligent_booking.member.service.validator.MemberServiceValidator
 import intelligent_booking.intelligent_booking.member.domain.Role
+import intelligent_booking.intelligent_booking.place.service.command.PlaceCommandService
+import intelligent_booking.intelligent_booking.reservation.service.command.ReservationCommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
@@ -28,7 +30,9 @@ class MemberCommandService @Autowired constructor(
     private val memberRepository: MemberRepository,
     private val authenticationManagerBuilder: AuthenticationManagerBuilder,
     private val jwtTokenProvider: JwtTokenProvider,
-    private val memberServiceValidator: MemberServiceValidator
+    private val memberServiceValidator: MemberServiceValidator,
+    private val placeCommandService: PlaceCommandService,
+    private val reservationCommandService: ReservationCommandService
 ) {
 
     fun signupMember(signupRequest: SignupRequest): UUID {
@@ -76,7 +80,11 @@ class MemberCommandService @Autowired constructor(
     fun withdraw(withdrawRequest: WithdrawRequest, uuid: UUID) {
         memberRepository.findOneByUUID(uuid)
             .takeIf { PasswordUtil.isMatchPassword(withdrawRequest.pw!!, it.pw) }
-            ?.also { memberRepository.delete(it) }
+            ?.also {
+                if (it.isPresident()) placeCommandService.deletePlaceByMember(uuid)
+                else reservationCommandService.deleteReservationByMember(it)
+                memberRepository.delete(it)
+            }
             ?: throw MemberException(MemberExceptionMessage.WRONG_PASSWORD)
     }
 }
