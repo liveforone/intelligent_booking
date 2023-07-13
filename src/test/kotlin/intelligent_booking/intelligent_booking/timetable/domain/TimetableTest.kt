@@ -31,7 +31,25 @@ class TimetableTest {
         timetable.subtractCount()
 
         //then
-        Assertions.assertThat(timetable.remainingCount).isEqualTo((basicCount - 1).toULong())
+        Assertions.assertThat(timetable.remainingCount).isEqualTo(basicCount - 1)
+    }
+
+    @Test
+    fun restoreOneCountTest() {
+        //given
+        val place = createPlace()
+        val basicCount: Long = 5
+        val reservationHour: Long = 12
+        val reservationMinute: Long = 35
+        val description = "test_description"
+        val timetable = Timetable.create(place, basicCount, reservationHour, reservationMinute, description)
+        timetable.subtractCount()
+
+        //when
+        timetable.restoreOneCount()
+
+        //then
+        Assertions.assertThat(timetable.remainingCount).isEqualTo(basicCount)
     }
 
     @Test
