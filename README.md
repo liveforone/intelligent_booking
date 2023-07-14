@@ -25,7 +25,7 @@
 # 2. 프로젝트 설계
 ## 시스템 설계
 * [전체 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/DESIGN.md)
-* [DB 설계]()
+* [DB 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/DB_DESIGN.md)
 * [흐름도]()
 ## 엔티티 설계
 * [회원 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/MEMBER_DESIGN.md)
