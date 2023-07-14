@@ -10,6 +10,7 @@ object ReservationResponse {
 
     fun reservationDetailSuccess(reservation: ReservationInfo) = ResponseEntity.ok(reservation)
     fun memberReservationSuccess(reservations: List<ReservationInfo>) = ResponseEntity.ok(reservations)
+    fun timetableReservationSuccess(reservations: List<ReservationInfo>) = ResponseEntity.ok(reservations)
     fun reservationSuccess() = ResponseEntity.status(HttpStatus.CREATED).body(RESERVATION_SUCCESS)
     fun cancelReservationSuccess() = ResponseEntity.ok(CANCEL_RESERVATION_SUCCESS)
 }
