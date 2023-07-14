@@ -33,6 +33,7 @@
 * [타임 테이블 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/TIMETABLE_DESIGN.md)
 * [예약 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/RESERVATION_DESIGN.md)
 * [신고 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/REPORT_DESIGN.md)
+* [리뷰 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/REVIEW_DESIGN.md)
 
 # 3. 고민점
 ## 기술적 고민
@@ -46,6 +47,7 @@
 * [테이블 정규화가 자원의 낭비같이 여겨질때]()
 * [단방향 관계에서 cascade 사용하기]()
 * [시와 분이 분할되어있는 상황에서 시간 비교하기](https://github.com/liveforone/intelligent_booking/blob/master/Documents/COMPLEX_TIME_CONTROL.md)
+* [단일 컬럼 조회시 jdsl 주의점]() -> listof 사용금지
 ## 비즈니스적 고민
 
 
