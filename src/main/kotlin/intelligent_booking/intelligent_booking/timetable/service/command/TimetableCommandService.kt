@@ -1,7 +1,6 @@
 package intelligent_booking.intelligent_booking.timetable.service.command
 
 import intelligent_booking.intelligent_booking.logger
-import intelligent_booking.intelligent_booking.place.domain.Place
 import intelligent_booking.intelligent_booking.place.repository.PlaceRepository
 import intelligent_booking.intelligent_booking.timetable.domain.Timetable
 import intelligent_booking.intelligent_booking.timetable.dto.request.CreateTimetable
@@ -57,9 +56,5 @@ class TimetableCommandService @Autowired constructor(
     fun deleteTimetable(uuid: UUID) {
         timetableRepository.findOneByUUID(uuid)
             .also { timetableRepository.delete(it) }
-    }
-
-    fun deleteTimetableByPlace(place: Place) {
-        timetableRepository.deleteBulkByPlace(place)
     }
 }
