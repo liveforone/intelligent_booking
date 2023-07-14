@@ -20,7 +20,6 @@ class ReservationCommandService @Autowired constructor(
     private val timetableRepository: TimetableRepository,
     private val timetableCommandService: TimetableCommandService
 ) {
-    //timetable_reservation 생성
     fun createReservation(createReservation: CreateReservation): UUID {
         return with(createReservation) {
             Reservation.create(
@@ -33,9 +32,6 @@ class ReservationCommandService @Autowired constructor(
         }
     }
 
-    /*
-    cancel시 timetable_reservation에서 삭제
-     */
     fun cancelReservation(uuid: UUID) {
         reservationRepository.findOneByUUID(uuid)
             .also {
