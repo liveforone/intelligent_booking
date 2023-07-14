@@ -23,7 +23,7 @@
 ```
 
 ## Json body 예시
-```
+```json
 [CreatePlace]
 {
   "name": "test_name",
