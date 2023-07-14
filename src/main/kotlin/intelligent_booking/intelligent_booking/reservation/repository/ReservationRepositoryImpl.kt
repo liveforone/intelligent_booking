@@ -59,6 +59,19 @@ class ReservationRepositoryImpl @Autowired constructor(
         }
     }
 
+    override fun findMemberUUIDByUUID(uuid: UUID): UUID? {
+        return try {
+            queryFactory.singleQuery {
+                select(col(Member::uuid))
+                from(Reservation::class)
+                join(Reservation::member)
+                where(col(Reservation::uuid).equal(uuid))
+            }
+        } catch (e: NoResultException) {
+            null
+        }
+    }
+
     override fun findReservationsByMember(memberUUID: UUID, lastUUID: UUID?): List<ReservationInfo> {
         return queryFactory.listQuery {
             select(listOf(
