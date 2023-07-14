@@ -35,7 +35,7 @@ class TimetableController @Autowired constructor(
         return TimetableResponse.detailSuccess(timetable)
     }
 
-    @GetMapping(TimetableUrl.TIMETABLES_BELONG_PLACE)
+    @GetMapping(TimetableUrl.PLACE_TIMETABLES)
     fun timetableByPlace(
         @PathVariable(TimetableParam.PLACE_UUID) placeUUID: UUID,
         @RequestParam(TimetableParam.LAST_UUID, required = false) lastUUID: UUID?
