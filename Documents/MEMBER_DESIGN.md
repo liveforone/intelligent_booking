@@ -30,7 +30,7 @@
 ```
 
 ## Json body 예시
-```
+```json
 [SignupRequest]
 {
   "email": "member1234@gmail.com",
