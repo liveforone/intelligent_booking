@@ -45,11 +45,13 @@ class ReservationRepositoryImpl @Autowired constructor(
                 select(listOf(
                     col(Reservation::uuid),
                     col(Timetable::uuid),
+                    col(Member::uuid),
                     col(Reservation::reservationState),
                     col(Reservation::createdDateTime),
                 ))
                 from(Reservation::class)
                 join(Reservation::timetable)
+                join(Reservation::member)
                 where(col(Reservation::uuid).equal(uuid))
             }
         } catch (e: NoResultException) {
@@ -62,6 +64,7 @@ class ReservationRepositoryImpl @Autowired constructor(
             select(listOf(
                 col(Reservation::uuid),
                 col(Timetable::uuid),
+                col(Member::uuid),
                 col(Reservation::reservationState),
                 col(Reservation::createdDateTime),
             ))
@@ -80,6 +83,7 @@ class ReservationRepositoryImpl @Autowired constructor(
             select(listOf(
                 col(Reservation::uuid),
                 col(Timetable::uuid),
+                col(Member::uuid),
                 col(Reservation::reservationState),
                 col(Reservation::createdDateTime),
             ))
