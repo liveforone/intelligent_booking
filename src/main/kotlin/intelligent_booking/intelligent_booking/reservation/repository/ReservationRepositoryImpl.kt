@@ -59,6 +59,7 @@ class ReservationRepositoryImpl @Autowired constructor(
         }
     }
 
+    //!!단건 uuid를 조회하는 경우는 listOf()를 사용하면 에러가 발생한다.!!//
     override fun findMemberUUIDByUUID(uuid: UUID): UUID? {
         return try {
             queryFactory.singleQuery {
