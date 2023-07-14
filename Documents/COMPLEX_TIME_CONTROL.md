@@ -13,14 +13,14 @@
 * 이 값에서 hour과 minute을 가져오는 것은 어렵지않다.
 * 다만 LocalDateTime 끼리의 비교는 상당히 쉬운데, hour과 minute의 형태로 비교하는 것은 어렵다.
 * 아래는 비교 방법을 나타냈다.
-```
+```kotlin
 if (hour == nowHour) 는 분끼리 비교한다.
 else 일때는 시간끼리 비교한다.
 ```
 
 ## 신고시 시간 비교
 * 신고할때에는 현재 시간이 예약시간 보다 크면서, 예약 시간에 하루를 더한 날보다는 적어야한다.
-```
+```kotlin
 val now = LocalDateTime.now()
 val reservationHour = timetable.reservationHour
 val reservationMinute = timetable.reservationMinute
