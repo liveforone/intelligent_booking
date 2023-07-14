@@ -13,4 +13,5 @@ class ReservationQueryService @Autowired constructor(
 ) {
     fun getReservationByUUID(uuid: UUID) = reservationRepository.findOneDtoByUUID(uuid)
     fun getReservationsByMember(memberUUID: UUID, lastUUID: UUID?) = reservationRepository.findReservationsByMember(memberUUID, lastUUID)
+    fun getReservationsByTimetable(timetableUUID: UUID, lastUUID: UUID?) = reservationRepository.findReservationsByTimetable(timetableUUID, lastUUID)
 }
