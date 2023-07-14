@@ -34,7 +34,7 @@ class ReservationController @Autowired constructor(
         return ReservationResponse.reservationDetailSuccess(reservation)
     }
 
-    @GetMapping(ReservationUrl.RESERVATION_BELONG_MEMBER)
+    @GetMapping(ReservationUrl.MEMBER_RESERVATIONS)
     fun reservationBelongMember(
         @PathVariable(ReservationParam.MEMBER_UUID) memberUUID: UUID,
         @RequestParam(ReservationParam.LAST_UUID, required = false) lastUUID: UUID?
@@ -43,7 +43,7 @@ class ReservationController @Autowired constructor(
         return ReservationResponse.memberReservationSuccess(reservations)
     }
 
-    @GetMapping(ReservationUrl.RESERVATION_BELONG_TIMETABLE)
+    @GetMapping(ReservationUrl.TIMETABLE_RESERVATIONS)
     fun reservationBelongTimetable(
         @PathVariable(ReservationParam.TIMETABLE_UUID) timetableUUID: UUID,
         @RequestParam(ReservationParam.LAST_UUID, required = false) lastUUID: UUID?
