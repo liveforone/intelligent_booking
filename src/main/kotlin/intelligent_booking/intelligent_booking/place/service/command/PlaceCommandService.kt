@@ -7,7 +7,6 @@ import intelligent_booking.intelligent_booking.place.dto.request.CreatePlace
 import intelligent_booking.intelligent_booking.place.dto.update.UpdateAddress
 import intelligent_booking.intelligent_booking.place.dto.update.UpdateTel
 import intelligent_booking.intelligent_booking.place.repository.PlaceRepository
-import intelligent_booking.intelligent_booking.timetable.service.command.TimetableCommandService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -17,8 +16,7 @@ import java.util.UUID
 @Transactional
 class PlaceCommandService @Autowired constructor(
     private val placeRepository: PlaceRepository,
-    private val memberRepository: MemberRepository,
-    private val timetableCommandService: TimetableCommandService
+    private val memberRepository: MemberRepository
 ) {
 
     fun createPlace(createPlace: CreatePlace, memberUUID: UUID): UUID {
@@ -42,13 +40,5 @@ class PlaceCommandService @Autowired constructor(
             placeRepository.findOneByUUID(uuid)
                 .also { it.updateAddress(city!!, roadNum!!, detail!!) }
         }
-    }
-
-    fun deletePlaceByMember(memberUUID: UUID) {
-        placeRepository.findOneByMember(memberUUID)
-            .also {
-                timetableCommandService.deleteTimetableByPlace(it)
-                placeRepository.delete(it)
-            }
     }
 }
