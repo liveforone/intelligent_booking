@@ -16,7 +16,7 @@
 ```
 
 ## Json Body 설계
-```
+```json
 [CreateReview]
 {
   "reservationUUID": "5ef3978c-1c83-41e7-9f68-46af54410bf4",
