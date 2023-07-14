@@ -15,7 +15,7 @@
 ```
 
 ## Json Body 예시
-```
+```json
 [ReportRequest]
 {
   "reservationUUID": "81b2b572-ba7d-43bd-a1a1-f681b4fda897",
