@@ -43,6 +43,15 @@ class ReservationController @Autowired constructor(
         return ReservationResponse.memberReservationSuccess(reservations)
     }
 
+    @GetMapping(ReservationUrl.RESERVATION_BELONG_TIMETABLE)
+    fun reservationBelongTimetable(
+        @PathVariable(ReservationParam.TIMETABLE_UUID) timetableUUID: UUID,
+        @RequestParam(ReservationParam.LAST_UUID, required = false) lastUUID: UUID?
+    ): ResponseEntity<*> {
+        val reservations = reservationQueryService.getReservationsByTimetable(timetableUUID, lastUUID)
+        return ReservationResponse.timetableReservationSuccess(reservations)
+    }
+
     @PostMapping(ReservationUrl.RESERVATION)
     fun reservation(
         @RequestBody @Valid createReservation: CreateReservation,
