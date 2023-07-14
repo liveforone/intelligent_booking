@@ -8,8 +8,6 @@ import intelligent_booking.intelligent_booking.globalUtil.createUUID
 import intelligent_booking.intelligent_booking.member.domain.Member
 import intelligent_booking.intelligent_booking.timetable.domain.Timetable
 import jakarta.persistence.*
-import org.hibernate.annotations.OnDelete
-import org.hibernate.annotations.OnDeleteAction
 import java.time.LocalDateTime
 import java.util.*
 
@@ -18,7 +16,7 @@ class Reservation private constructor(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long?,
     @Column(columnDefinition = UUID_TYPE, unique = true, nullable = false) val uuid: UUID = createUUID(),
     @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) val timetable: Timetable,
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) @OnDelete(action = OnDeleteAction.CASCADE) val member: Member,
+    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(updatable = false) val member: Member,
     @Convert(converter = ReservationStateConverter::class) @Column(nullable = false) var reservationState: ReservationState = ReservationState.RESERVATION,
     @Column(nullable = false, updatable = false) val createdDateTime: LocalDateTime = LocalDateTime.now()
 ) {
