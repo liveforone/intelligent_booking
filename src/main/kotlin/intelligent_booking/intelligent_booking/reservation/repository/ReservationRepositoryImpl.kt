@@ -75,6 +75,24 @@ class ReservationRepositoryImpl @Autowired constructor(
         }
     }
 
+    override fun findReservationsByTimetable(timetableUUID: UUID, lastUUID: UUID?): List<ReservationInfo> {
+        return queryFactory.listQuery {
+            select(listOf(
+                col(Reservation::uuid),
+                col(Timetable::uuid),
+                col(Reservation::reservationState),
+                col(Reservation::createdDateTime),
+            ))
+            from(Reservation::class)
+            join(Reservation::timetable)
+            join(Reservation::member)
+            where(col(Timetable::uuid).equal(timetableUUID))
+            where(ltLastUUID(lastUUID))
+            orderBy(col(Reservation::id).desc())
+            limit(ReservationRepositoryConstant.LIMIT_PAGE)
+        }
+    }
+
     private fun findLastId(lastUUID: UUID): Long {
         return queryFactory.singleQuery {
             select(listOf(col(Reservation::id)))
