@@ -21,7 +21,7 @@
 ```
 
 ## Json Body 예시
-```
+```json
 [CreateReservation]
 {
   "timetableUUID": "8c95c6bc-cd2a-4717-a23e-6f442bbedcc7",
