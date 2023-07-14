@@ -8,6 +8,8 @@
 # 1. 프로젝트 소개
 ## 소개
 * 해당 프로젝트는 예약 서비스 플랫폼입니다.
+* 예약 이라는 특성때문에 대부분의 이벤트들이 시간을 기반으로 작동합니다. 제약들도 시간을 기반으로 걸리게됩니다.
+* 통합 시간을 다루는 것을 포함하여 분할되어있는 시간을 다루는것 까지 모두 확인하실 수 있습니다.
 * 내/외부 식별자를 구분하여 보다 확장성있는 어플리케이션을 만들었습니다.
 * 또한 확장성 있는 어플리케이션을 위해 특정기술과 도메인끼리의 종속을 최대한 줄이기 위해 노력하였고, 이는 고민점에 기술되어있습니다.
 * 동적쿼리를 적극활용하여 유연하게 사용자의 요청을 받아들이도록 설계하였습니다.
@@ -30,6 +32,7 @@
 * [장소 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/PLACE_DESIGN.md)
 * [타임 테이블 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/TIMETABLE_DESIGN.md)
 * [예약 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/RESERVATION_DESIGN.md)
+* [신고 설계](https://github.com/liveforone/intelligent_booking/blob/master/Documents/REPORT_DESIGN.md)
 
 # 3. 고민점
 ## 기술적 고민
@@ -38,8 +41,11 @@
 * [Jdsl 많은 조건 동적쿼리 및 컨트롤러 파라미터]() -> place에 address 동적쿼리로 설명
 * [JWT에 종속적이지 않게 만들기]()
 * [UUID 사용시 No-Offset]() -> timetable에 동적쿼리로 설명
-* [Jdsl 벌크연산]() -> 롤백쿼리는 jpql로 직접 날림. 이유는 jdsl이 set 파라미터에서 컬럼값을 받지 않아서 벌크연산 처리할때에는 1차캐시를 무시하기때문에 clearAutomatically = true를 하여 clear해준다.
+* [Jdsl 벌크연산]() -> 롤백쿼리는 jpql로 직접 날림. 이유는 jdsl이 set 파라미터에서 컬럼값을 받지 않아서 벌크연산 처리할때에는 1차캐시를 무시하기때문에 clearAutomatically = true를 하여 clear해준다. 벌크시에는 삭제건 업데이트건 join이 안되기때문에 엔티티자체를 파라미터로 받아서 처리하면 비슷한 효과를 낼 수 있다.
 * [Jdsl 임베디드 컬럼 꺼내는법]()
+* [테이블 정규화가 자원의 낭비같이 여겨질때]()
+* [단방향 관계에서 cascade 사용하기]()
+* [시와 분이 분할되어있는 상황에서 시간 비교하기](https://github.com/liveforone/intelligent_booking/blob/master/Documents/COMPLEX_TIME_CONTROL.md)
 ## 비즈니스적 고민
 
 
@@ -62,16 +68,3 @@ jwt 토큰 파싱은 사실상 백엔드만 가능하다.
 헤더에 jwt 토큰이 있더라도 파라미터로 전달해야할까?
 검증을 위해 한번 더 하는 것은 좋다고 생각
 jwt 종속성을 피하기 위해, 회원 도메인 이외에는 api에 파라미터로 받아서 사용한다. 파싱객체 사용안한다.
-
-
-==도메인==
-timetable_reservation -> timetableUUID, memberUUID(신고 및 회원 확인), createtime, 삭제안함
-recommend
-
-
-==할것==
-예약을 사용자가 하는 예약과 오너가 보는 예약으로 나누어서 진행한다.
-이에 따라 회원탈퇴시 예약이 삭제되도 오너가 보는 예약은 삭제 안되도록 진행한다.
-노쇼시 회원 신고하기
-신고는 하루안에 가능함, 신고는 따로 도메인 빼기(이벤트 핸들러로)
-신고처리 후 5건 넘었을때 정지된 계정인지 확인
