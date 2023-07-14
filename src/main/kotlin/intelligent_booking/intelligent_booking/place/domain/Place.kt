@@ -6,6 +6,8 @@ import intelligent_booking.intelligent_booking.globalUtil.UUID_TYPE
 import intelligent_booking.intelligent_booking.globalUtil.createUUID
 import intelligent_booking.intelligent_booking.member.domain.Member
 import jakarta.persistence.*
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import java.util.*
 
 @Entity
@@ -15,7 +17,7 @@ class Place private constructor(
     @OneToOne(fetch = FetchType.LAZY) @JoinColumn(
         updatable = false,
         unique = true
-    ) val member: Member,
+    ) @OnDelete(action = OnDeleteAction.CASCADE) val member: Member,
     @Column(nullable = false) val name: String,
     @Column(nullable = false) var tel: String,
     @Embedded var address: Address
