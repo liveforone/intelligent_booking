@@ -1,6 +1,5 @@
 package intelligent_booking.intelligent_booking.reservation.service.command
 
-import intelligent_booking.intelligent_booking.member.domain.Member
 import intelligent_booking.intelligent_booking.member.repository.MemberRepository
 import intelligent_booking.intelligent_booking.reservation.domain.Reservation
 import intelligent_booking.intelligent_booking.reservation.dto.request.CreateReservation
@@ -10,7 +9,7 @@ import intelligent_booking.intelligent_booking.timetable.service.command.Timetab
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.UUID
+import java.util.*
 
 @Service
 @Transactional
