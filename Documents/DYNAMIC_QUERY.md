@@ -9,8 +9,8 @@
 * 즉 하나 혹은 두개의 주소를 사용하거나, 혹은 모든 주소를 사용하여 검색을 가능하게 하였다.
 
 ## 코드로 설명
-* 아래 코드에서 where(ltLastUUID()) 부분은 [UUID 사용시 No-Offset]()에서 설명하고 있으니 해당 문서를 참고 바란다.
-* 또한 associate의 경우 [Jdsl 임베디드 컬럼 꺼내는법]()을 참고바란다.
+* 아래 코드에서 where(ltLastUUID()) 부분은 [UUID 사용시 No-Offset](https://github.com/liveforone/intelligent_booking/blob/master/Documents/NO_OFFSET.md)에서 설명하고 있으니 해당 문서를 참고 바란다.
+* 또한 associate의 경우 [Jdsl 임베디드 컬럼 꺼내는법](https://github.com/liveforone/intelligent_booking/blob/master/Documents/EMBEDED_IN_JDSL.md)을 참고바란다.
 * 모든 검색값들을 nullable하게 입력받았다.
 * 그리고 searchAddress라는 동적쿼리 함수를 호출한다.
 * 해당 함수는 and() 쿼리에 조건들을 담아서 리턴하는데,
