@@ -1,0 +1,5 @@
+package intelligent_booking.intelligent_booking.exception.exception
+
+import intelligent_booking.intelligent_booking.exception.message.ReportExceptionMessage
+
+class ReportException(val reportExceptionMessage: ReportExceptionMessage) : RuntimeException(reportExceptionMessage.message)
