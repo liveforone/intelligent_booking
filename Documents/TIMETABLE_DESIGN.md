@@ -38,7 +38,7 @@
 ```
 
 ## Json Body 예시
-```
+```json
 [CreateTimetable]
 {
   "placeUUID": "b07e1235-9bb9-411b-a408-c3affce874dc",
