@@ -43,8 +43,4 @@ class ReservationCommandService @Autowired constructor(
                 timetableCommandService.restoreOneCount(it.timetable.uuid)
             }
     }
-
-    fun deleteReservationByMember(member: Member) {
-        reservationRepository.deleteBulkByMember(member)
-    }
 }
