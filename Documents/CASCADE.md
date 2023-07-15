@@ -1,4 +1,4 @@
-# 단방향 관계에서 cascade 사용하기
+# 단방향 관계에서 delete cascade 사용하기
 
 ## jpa 에서 cascade
 * cascade는 위험하기 때문에 조심스럽게, 순차적으로 테이블들을 쫒아가며 파악하고 적용해야한다.
