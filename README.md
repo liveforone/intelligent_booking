@@ -12,7 +12,7 @@
 * 통합 시간을 다루는 것을 포함하여 **분할되어있는 시간**을 다루는것 까지 모두 확인하실 수 있습니다.
 * **내/외부 식별자**를 구분하여 보다 확장성있는 어플리케이션을 만들었습니다.
 * 동적쿼리를 적극활용하여 유연하게 사용자의 요청을 받아들이도록 설계하였습니다.
-* 마지막으로 간단한 쿼리부터 제약조건, 정규화에 이르기까지 DB에서 대한 많은 고민과 도전들이 담겨있습니다.
+* 마지막으로 간단한 쿼리부터 제약조건 등에 이르기까지 DB에서 대한 많은 고민과 도전들이 담겨있습니다.
 * 이 프로젝트는 지속적으로 좋은 코드, 패턴, 효율적인 로직으로 리팩토링됩니다.
 ## 기술 스택
 * Framework : Spring Boot 3.1.1
@@ -41,16 +41,5 @@
 * [Jdsl 많은 조건에서 동적쿼리](https://github.com/liveforone/intelligent_booking/blob/master/Documents/DYNAMIC_QUERY.md)
 * [UUID 사용시 No-Offset 페이징](https://github.com/liveforone/intelligent_booking/blob/master/Documents/NO_OFFSET.md)
 * [Jdsl 임베디드 컬럼 꺼내는법](https://github.com/liveforone/intelligent_booking/blob/master/Documents/EMBEDED_IN_JDSL.md)
-* [테이블 정규화가 자원의 낭비같이 여겨질때]()
-* [단방향 관계에서 cascade 사용하기]()
+* [단방향 관계에서 cascade 사용하기](https://github.com/liveforone/intelligent_booking/blob/master/Documents/CASCADE.md)
 * [시와 분이 분할되어있는 상황에서 시간 비교하기](https://github.com/liveforone/intelligent_booking/blob/master/Documents/COMPLEX_TIME_CONTROL.md)
-
-https://kukekyakya.tistory.com/546
-
-==테이블 정규화==
-테이블을 정규화(쪼개는) 하는 기준은 사용자로 볼 수 있다.
-일례로 주문 테이블을 만들때 주문 테이블을 일반 회원도 보고, 셀러도 본다면 사용자가 둘이다.
-그런데 일반회원이 탈퇴한다면 주문테이블이 삭제되게 만들게되면 이는 셀러에게 영향을 준다.
-셀러는 해당 주문 데이터를 기반으로 매출을 산정하거나 할것인데 말이다.
-따라서 테이블은 쪼개질때 까지 쪼개는 것이 옳다.
-사용범위나 목적이 조금이라도 달라지면 테이블을 분리하는것이 옳다.
